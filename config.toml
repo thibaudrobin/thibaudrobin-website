@@ -1,0 +1,54 @@
+baseURL = "https://thibaudrobin.github.io/"
+languageCode = "en-us"
+title = "Personnal security blog"
+theme = "hugo-redlounge"
+
+[params]
+	sidebartitle = "Thibaud Robin"
+	sidebartagline = "Alias Th1b4ud"
+	sidebartagline2 = "PENTESTER"
+	sidedescription = "Personnal blog to speak about cybersecurity, technology and much more !"
+	sidebarphoto = "/img/moi.jpg"
+	author = "Thibaud Robin"
+	thumbnail = ["/img/favicon.jpg"]
+
+
+[[menu.main]]
+	name   = "WHOAMI"
+	url    = "/whoami"
+	weight = 1
+
+[[menu.main]]
+	name   = "WRITEUPS"
+	url    = "/writeups"
+	weight = 2
+
+[[menu.main]]
+	name   = "ARTICLES"
+	url    = "/articles"
+	weight = 3
+
+[[menu.social]]
+	pre = "<i class='fab fa-github'></i>"
+    url = "https://github.com/thibaudrobin"
+    identifier = "github"
+
+[[menu.social]]
+	pre = "<i class='fab fa-gitlab'></i>"
+    url = "https://gitlab.com/thibaud.robin"
+    identifier = "gitlab"
+
+[[menu.social]]
+	pre = "<i class='fab fa-twitter'></i>"
+    url = "https://twitter.com/th1b4ud"
+    identifier = "twitter"
+
+[[menu.social]]
+	pre = "<i class='fab fa-linkedin'></i>"
+    url = "https://www.linkedin.com/in/thibaud-robin/"
+    identifier = "linkedin"
+
+[[menu.social]]
+	pre = "<i class='root-me'></i>"
+    url = "https://www.root-me.org/Th1b4ud/"
+    identifier = "root-me"

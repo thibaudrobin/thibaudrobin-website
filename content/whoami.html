@@ -1,0 +1,36 @@
++++
+title = "Whoami"
+nodate = "true"
+noread = "true"
+hide_from_main_page = "true"
+nopaging = "true"
++++
+
+<p>
+    Cybersecurity enthusiast | Challenge addict | Python & Linux lover | Junior pentester
+    <div id="termynal">
+        <span data-ty="input" data-ty-prompt="[th1b4ud@th1b4ud-pc ~]$" data-ty-cursor="▋">python3</span>
+        <span data-ty data-ty-delay="700">Python 3.7.0 - [GCC 8.1.1] on linux - Type "help", "copyright", "credits" or "license" for more information</span>
+        <span data-ty="input" data-ty-delay="300"  data-ty-prompt=">>>" data-ty-cursor="▋">import platform</span>
+        <span data-ty="input" data-ty-delay="300"  data-ty-prompt=">>>" data-ty-cursor="▋">os = platform.system()</span>
+        <span data-ty="input" data-ty-prompt=">>>" data-ty-cursor="▋">def whoami():</span>
+        <span data-ty="input" data-ty-prompt="..." data-ty-cursor="▋">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if os == "Windows":</span>
+        <span data-ty="input"  data-ty-delay="700" data-ty-prompt="..." data-ty-cursor="▋">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("A bad guy ! Why continue to use Windows if Linux exist ? :(")</span>
+        <span data-ty="input" data-ty-prompt="..." data-ty-cursor="▋">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif os == "Linux":</span>
+        <span data-ty="input" data-ty-prompt="..." data-ty-cursor="▋">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if "ARCH" in platform.uname()[2]:</span>
+        <span data-ty="input" data-ty-delay="700" data-ty-prompt="..." data-ty-cursor="▋">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Haha the best ! Yeah ArchLinux is the best distrib :D")</span>
+        <span data-ty="input" data-ty-prompt="..." data-ty-cursor="▋">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:</span>
+        <span data-ty="input" data-ty-prompt="..." data-ty-cursor="▋">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Nice guy ! But why don't have a better distrib ? :)")</span>
+        <span data-ty="input" data-ty-delay="1000" data-ty-prompt="..." data-ty-cursor="▋"></span>
+        <span data-ty="input" data-ty-prompt=">>>" data-ty-cursor="▋">whoami()</span>
+        <span data-ty data-ty-delay="100">Haha the best ! Yeah ArchLinux is the best distrib :D</span>
+    </div>
+
+    <script>
+    var termynal = new Termynal('#termynal', { 
+        startDelay: 600,
+        typeDelay: 50,
+        lineDelay: 150
+    });
+    </script>
+</p>

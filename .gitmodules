@@ -1,0 +1,7 @@
+[submodule "themes/hugo-redlounge"]
+	path = themes/hugo-redlounge
+	url = https://github.com/thibaudrobin/thibaudrobin-website-theme.git
+[submodule "public"]
+	path = public
+	url = https://github.com/thibaudrobin/thibaudrobin.github.io.git
+	branch = master
