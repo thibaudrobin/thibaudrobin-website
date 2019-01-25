@@ -1,0 +1,8 @@
+<div class="alert danger">
+    <i class="logo fas fa-skull-crossbones"></i>
+    <p class="text"><strong>Danger</strong> : {{ index .Params 0 }} 
+    {{ if index .Params 1 }}
+        <br><code>{{ index .Params 1 }}</code>
+    {{ end }}
+    </p>
+</div>

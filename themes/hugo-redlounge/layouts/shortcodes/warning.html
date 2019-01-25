@@ -1,0 +1,8 @@
+<div class="alert warning">
+    <i class="logo fas fa-exclamation-triangle"></i>
+    <p class="text"><strong>Warning</strong> : {{ index .Params 0 }} 
+    {{ if index .Params 1 }}
+        <br><code>{{ index .Params 1 }}</code>
+    {{ end }}
+    </p>
+</div>

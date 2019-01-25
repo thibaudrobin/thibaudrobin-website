@@ -1,0 +1,8 @@
+<div class="alert protips">
+    <i class="logo fas fa-hand-holding-heart"></i>
+    <p class="text"><strong>ProTips</strong> : {{ index .Params 0 }} 
+    {{ if index .Params 1 }}
+        <br><code>{{ index .Params 1 }}</code>
+    {{ end }}
+    </p>
+</div>
