@@ -43,7 +43,7 @@ git commit -m "$msg"
 git push origin master
 
 if [ $? -eq 0 ]; then
-  echo -e "\033[0;1;32m[+] Pushed succesfully !\033[0m"
+  echo -e "\033[0;1;32m[+] Updates saved !\033[0m"
 else
   echo -e "\033[0;1;31m[x] Error during git push...\033[0m"
 fi
