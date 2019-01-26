@@ -11,6 +11,7 @@ theme = "hugo-redlounge"
 	sidebarphoto = "/img/moi.jpg"
 	author = "Thibaud Robin"
 	thumbnail = ["/img/favicon.jpg"]
+	gaid = "UA-133286401-1"
 
 
 [[menu.main]]
