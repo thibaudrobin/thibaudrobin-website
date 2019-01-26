@@ -1,0 +1,9 @@
+<ul>
+    <!-- orders content according to the "date" field in front matter -->
+    {{ range first 3 .Pages.ByDate.Reverse }}
+        <li>
+            <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+            <time>{{ .Date.Format "Mon, Jan 2, 2006" }}</time>
+        </li>
+    {{ end }}
+</ul>
