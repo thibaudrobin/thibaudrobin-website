@@ -91,7 +91,6 @@ foreach(glob($userdir . "*") as $file) {
     echo "<li><a href='$file'>$file</a></li>";
 }
 echo "</ul>";
-
 ?>
 
 <h1>Upload your pics!</h1>
