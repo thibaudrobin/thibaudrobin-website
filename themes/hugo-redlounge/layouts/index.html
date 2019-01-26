@@ -11,8 +11,7 @@
 
           <div class="posts">
             {{ $Site := .Site }}
-            {{ range .Data.Pages }}
-            {{ if not .Params.hide_from_main_page }}
+            {{ range first 3 .Pages.ByDate.Reverse }}
             <section  class="post">
                 <header class="post-header">
                     {{ if .Params.thumbnail }}
@@ -63,7 +62,6 @@
               {{ .Content }}
             {{ end }}
           </section>
-          {{ end }}
           {{ end }}
         </div>
 

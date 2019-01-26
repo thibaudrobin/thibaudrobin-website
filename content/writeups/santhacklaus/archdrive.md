@@ -5,7 +5,6 @@ title = "ArchDrive"
 subtitle = "The new secure cloud !"
 thumbnail = "/img/santhacklaus/logo.png"
 nopaging = "true"
-hide_from_main_page = "true"
 +++
 
 ArchDrive is the biggest challenge of the Santhacklaus CTF and my favorite one. It's divided in 5 steps of increasing difficulty. The challenge is not really hard, but particularly long and time-consuming. You need to have some strong skills in web pentesting, some basic skills in forensic and medium skills in Linux system.

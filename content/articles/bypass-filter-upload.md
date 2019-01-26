@@ -1,11 +1,10 @@
 +++
 categories = ["Articles", "PHP", "Web"]
-date = "2019-01-20"
+date = "2019-01-25"
 title = "Bypass file upload filter with .htaccess"
 subtitle = "What a weak protection !"
 thumbnail = "/img/cap.svg"
 nopaging = "true"
-hide_from_main_page = "true"
 +++
 
 I think you know what I am talking about. The "file upload" vulnerability is familiar for you ? Nice. So you know how it could be difficult to bypass protection to upload a webshell. I will show you a little technique to add to your test when you are trying to exploit file upload :)
@@ -91,6 +90,7 @@ foreach(glob($userdir . "*") as $file) {
     echo "<li><a href='$file'>$file</a></li>";
 }
 echo "</ul>";
+
 ?>
 
 <h1>Upload your pics!</h1>

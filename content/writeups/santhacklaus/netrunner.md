@@ -5,7 +5,6 @@ title = "Netrunner"
 subtitle = "V, I got a mission for you !"
 thumbnail = "/img/santhacklaus/logo.png"
 nopaging = "true"
-hide_from_main_page = "true"
 +++
 
 Netrunner is the second biggest challenge of the Santhacklaus CTF. The challenge is not really hard, but could be particulary annoying if you don't know what to do. You need to have some skills in pentest web and medium skills in Linux system.
