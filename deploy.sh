@@ -25,9 +25,9 @@ git commit -m "$msg"
 git push origin master
 
 if [ $? -eq 0 ]; then
-  echo -e "\033[0;1;32m[+] Updates deployed !\033[0m"
+  echo -e "\033[0;1;32m[+] Updates deployed !\n\033[0m"
 else
-  echo -e "\033[0;1;31m[x] Error during deployment...\033[0m"
+  echo -e "\033[0;1;31m[x] Error during deployment...\n\033[0m"
 fi
 
 # Come Back up to the Project Root
