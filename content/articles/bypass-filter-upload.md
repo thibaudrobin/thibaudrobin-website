@@ -121,8 +121,9 @@ So, if we recap, we can't upload file with php extension. So the current goal is
 
 But what is `.htaccess` file ?
 
-_".htaccess is a configuration file for use on web servers running the Apache Web Server software. When a .htaccess file is placed in a directory which is in turn 'loaded via the Apache Web Server', then the .htaccess file is detected and executed by the Apache Web Server software."_
+_".htaccess files provide a way to make configuration changes on a per-directory basis."_
 
+You can read more here : https://httpd.apache.org/docs/2.4/en/howto/htaccess.html
 
 Pretty clear. Thanks google ! So it's a configuration file. Now look at this conf :
 
@@ -232,8 +233,9 @@ I choose here utf-16 Big Endian encoding (to avoid some php bug). So we will hav
 Here is a little python script to automate payload creation. You have to put the xbitmap signature to bypass the others filters.
 
 ```python
-## Description : create and bypass file upload filter with .htaccess
-## Author : Thibaud Robin
+#!/usr/bin/python3
+# Description : create and bypass file upload filter with .htaccess
+# Author : Thibaud Robin
 
 # Will prove the file is a legit xbitmap file and the size is 1337x1337
 SIZE_HEADER = b"\n\n#define width 1337\n#define height 1337\n\n"
@@ -276,10 +278,11 @@ And enjoy your webshell :)
 
 ## Conclusion
 
-It's really complicated to do a good and secure feature of file upload. There will be always a technique to bypass the security. The best way to secure your platform is to use framework which are already secured (a little...) and to install a WAF (Web Application Firewall) like ModSecurity in Apache in front of your application.
+It's really complicated to do a good and secure feature of file upload. There will be always a technique to bypass the security. The best way to secure your platform is to use framework which are already secured (a little...), use [ImageMagick](http://php.net/manual/fr/book.imagick.php) functions to check file before to upload it and install a WAF (Web Application Firewall) like ModSecurity in Apache in front of your application.
 
 And always never trust user input !!!
 
 See you soon :)
 
 Th1b4ud
+
