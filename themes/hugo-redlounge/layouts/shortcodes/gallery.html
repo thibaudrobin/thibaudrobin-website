@@ -1,0 +1,16 @@
+<style>
+    .gallery {
+        text-align: center;
+    }
+
+    .gallery img{
+        width: 75%;
+        margin: auto;
+    }
+</style>
+
+<div class="gallery">
+    {{ range $element := .Params }}
+        <img alt="" src="{{ $element }}">         
+    {{ end }}
+</div>

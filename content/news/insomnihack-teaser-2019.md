@@ -1,7 +1,7 @@
 +++
 categories = ["News", "CTF", "Insomnihack"]
 date = "2019-01-21"
-title = "Insomni'hack Teaser 2019 CTF recap"
+title = "Insomni'hack Teaser 2019 CTF - Recap"
 thumbnail = "/img/insomnihack/logo.jpg"
 nopaging = "true"
 +++
