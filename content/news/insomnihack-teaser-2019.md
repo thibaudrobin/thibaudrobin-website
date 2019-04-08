@@ -1,5 +1,5 @@
 +++
-categories = ["News", "CTF", "Insomnihack"]
+categories = ["News", "CTF", "Insomnihack-Teaser-2019"]
 date = "2019-01-21"
 title = "Insomni'hack Teaser 2019 CTF - Recap"
 thumbnail = "/img/insomnihack/logo.jpg"

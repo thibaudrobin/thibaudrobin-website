@@ -1,5 +1,5 @@
 +++
-categories = ["News", "CTF", "NeverlanCTF"]
+categories = ["News", "CTF", "NeverlanCTF-2019"]
 date = "2019-02-04"
 title = "Neverlanctf 2019 - Recap"
 thumbnail = "/img/neverlanctf/logo.jpg"
