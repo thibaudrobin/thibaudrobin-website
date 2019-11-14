@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Personnal security blog</title>
+    <link>https://thibaudrobin.github.io/categories/</link>
+    <description>Recent content in Categories on Personnal security blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://thibaudrobin.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Articles</title>
+      <link>https://thibaudrobin.github.io/categories/articles/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/articles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CERT</title>
+      <link>https://thibaudrobin.github.io/categories/cert/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/cert/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CTF</title>
+      <link>https://thibaudrobin.github.io/categories/ctf/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hacklab-ESGI-CTF-2019</title>
+      <link>https://thibaudrobin.github.io/categories/hacklab-esgi-ctf-2019/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/hacklab-esgi-ctf-2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Writeups</title>
+      <link>https://thibaudrobin.github.io/categories/writeups/</link>
+      <pubDate>Sat, 06 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/writeups/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PHP</title>
+      <link>https://thibaudrobin.github.io/categories/php/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web</title>
+      <link>https://thibaudrobin.github.io/categories/web/</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Santhacklaus-2018</title>
+      <link>https://thibaudrobin.github.io/categories/santhacklaus-2018/</link>
+      <pubDate>Sun, 30 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/santhacklaus-2018/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>System</title>
+      <link>https://thibaudrobin.github.io/categories/system/</link>
+      <pubDate>Sun, 30 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/system/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Forensic</title>
+      <link>https://thibaudrobin.github.io/categories/forensic/</link>
+      <pubDate>Tue, 25 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://thibaudrobin.github.io/categories/forensic/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
