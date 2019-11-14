@@ -1,7 +1,7 @@
 +++
 categories = ["Writeups", "CTF", "Hacklab-ESGI-CTF-2019"]
 date = "2019-04-06"
-title = "ZedCorp Challenge - My name is Rookie"
+title = "[CTF - Hacklab-ESGI-2019] ZedCorp Challenge - My name is Rookie"
 thumbnail = "/img/hacklab-esgi-2019/logo.png"
 nopaging = "true"
 +++

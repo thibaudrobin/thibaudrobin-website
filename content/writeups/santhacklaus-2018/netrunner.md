@@ -1,7 +1,7 @@
 +++
 categories = ["Writeups", "CTF", "Santhacklaus-2018", "Web", "System"]
 date = "2018-12-30"
-title = "Netrunner"
+title = "[CTF - Santhacklaus-2018] Netrunner"
 subtitle = "V, I got a mission for you !"
 thumbnail = "/img/santhacklaus/logo.png"
 nopaging = "true"

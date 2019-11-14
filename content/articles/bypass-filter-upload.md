@@ -1,7 +1,7 @@
 +++
 categories = ["Articles", "PHP", "Web"]
 date = "2019-01-25"
-title = "Bypass file upload filter with .htaccess"
+title = "[WEB] Bypass file upload filter with .htaccess"
 subtitle = "What a weak protection !"
 thumbnail = "/img/cap.svg"
 nopaging = "true"

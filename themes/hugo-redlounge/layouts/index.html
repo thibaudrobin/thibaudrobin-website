@@ -9,60 +9,76 @@
             
             {{ partial "menu.html" . }}
 
-          <div class="posts">
-            {{ $Site := .Site }}
-            {{ range first 3 .Pages.ByDate.Reverse }}
-            <section  class="post">
-                <header class="post-header">
-                    {{ if .Params.thumbnail }}
-                    <div class="post-avatar-wrapper">
-                        <img class="post-avatar" alt="" src="{{ .Params.thumbnail }}">
-                    </div>
+            <div class="posts">
+                
+                <section  class="post">
+                    <h1 class="list-menu">Articles</h1>
+
+                    {{ $Site := .Site }}
+                    {{ range .Site.RegularPages }}
+                    {{ $title := .Title}}
+                    {{ $relPermalink := .RelPermalink }}
+                        {{ if in .Params.categories "Articles" }}
+
+                            <div class="post-categories list-menu">
+                                <ul class="list-menu">
+                                    <li>
+                                        <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        {{ end }}
                     {{ end }}
-                    <h1 class="post-title">
-                      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                  </h1>
-                  {{ if .Params.subtitle }}
-                  <h3 class="post-subtitle">
-					  <sup class="quote"><i class="fas fa-quote-left"></i></sup>
-                      {{ .Params.subtitle }} 
-                  </h3>
-                  {{ end }}
-              </header>
-              <p class="post-meta">
-                  {{ if not .Params.nodate }}
-                  <span class="post-date">
-                    <span class="post-date-day"><sup>{{ .Date.Format "2" }}</sup></span><span class="post-date-separator">/</span><span class="post-date-month">{{ .Date.Format "Jan" }}</span> <span class="post-date-year">{{ .Date.Format "2006" }}</span>
-                </span>
-                {{ end }}
-                {{ if not .Params.noauthor }}
-                    {{ if .Params.author }}By <a class="post-author" {{ if .Params.authorlink }}href="{{ .Params.authorlink }}"{{ end }}>{{ .Params.author }}</a>{{ end }}
-                {{ end }}
-                {{ if not .Params.noread }}
-                    <span class="post-reading-time"><i class="fa fa-clock-o"></i> <em>{{.ReadingTime}} min. read</em></span>
-                {{ end }}
-                {{ if .Params.categories }}
-                <div class="post-categories">
-                    {{ range .Params.categories }}
-                    <a class="post-category post-category-{{ . | urlize }}" href="{{ $Site.BaseURL }}/categories/{{ . | urlize }}">{{ . }}</a>
+                </section>
+
+
+
+                <section  class="post">
+                    <h1 class="list-menu">Writeups</h1>
+
+                    {{ $Site := .Site }}
+                    {{ range .Site.RegularPages }}
+                    {{ $title := .Title}}
+                    {{ $relPermalink := .RelPermalink }}
+                        {{ if in .Params.categories "Writeups" }}
+
+                            <div class="post-categories list-menu">
+                                <ul class="list-menu">
+                                    <li>
+                                        <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        {{ end }}
                     {{ end }}
-                </div>
-                {{ end }}
-            </p>
-            {{ if .Truncated  }}
-              <article class="post-summary">
-                  {{ .Summary }}
-              </article>
-              <a href="{{ .RelPermalink }}">
-                    <div class="read-more-link">
-                        <span class="read-more-slashes"></span><i class="fas fa-plus"></i> &nbsp;Read more...
-                    </div>
-                </a>
-            {{ else }}
-              {{ .Content }}
-            {{ end }}
-          </section>
-          {{ end }}
+                </section>
+
+                <!-- <section  class="post">
+                        <h1 class="post-title">Others</h1>
+
+                        {{ $Site := .Site }}
+                        {{ range .Site.RegularPages }}
+                        {{ $title := .Title}}
+                        {{ $relPermalink := .RelPermalink }}
+                            {{ if in .Params.categories "Others" }}
+    
+                                <div class="post-categories list-menu">
+                                    <ul class="list-menu">
+                                        <li>
+                                            <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+    
+                            {{ end }}
+                        {{ end }}
+                        
+                </section> -->
+            </div>
+
+            
         </div>
 
         {{ partial "footer.html" . }}
