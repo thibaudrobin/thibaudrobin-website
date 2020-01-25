@@ -3,7 +3,7 @@
 echo -e "\033[0;1;34m[*] Start building...\033[0m"
 
 # Build the project.
-hugo -t hugo-redlounge 1> /dev/null
+hugo 1> /dev/null
 
 cd public
 
