@@ -1,7 +1,7 @@
 baseURL = "https://thibaudrobin.github.io/"
 languageCode = "en-us"
 title = "Personnal security blog"
-theme = "hugo-redlounge"
+
 
 [params]
 	sidebartitle = "Thibaud Robin"
