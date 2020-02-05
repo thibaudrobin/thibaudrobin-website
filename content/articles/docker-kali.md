@@ -5,7 +5,7 @@ title = "[MISC] Kali Linux in 3 seconds with Docker"
 subtitle = "Because my time is too valuable !"
 thumbnail = "/img/docker.png"
 nopaging = "true"
-draft = "true"
+draft = "false"
 +++
 
 
@@ -41,11 +41,23 @@ I think you've got it, we're going to use Docker for our offensive use.
 
 First you need to install Docker obviously. The documentation is really clear.
 
-For Linux : https://docs.docker.com/install/
+### For Linux
 
-For Windows : https://docs.docker.com/docker-for-windows/install/
+1. Follow the doc https://docs.docker.com/install/
+2. Make docker work with your main user : https://docs.docker.com/install/linux/linux-postinstall/
 
-And please, if you are on linux don't run Docker as root !! Follow this link to make docker work with your main user : https://docs.docker.com/install/linux/linux-postinstall/
+
+### For Windows : 
+
+1. Open the official documentation : https://docs.docker.com/docker-for-windows/install
+2. Grab account credentials on BugMeNot : http://bugmenot.com/view/id.docker.com
+3. Go to https://hub.docker.com/?overlay=onboarding to download Docker client.
+4. Install Hyper-V : https://docs.microsoft.com/fr-fr/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v
+    - Open a PowerShell console as an administrator.
+    - Type command : `Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All`
+
+{{< warning "Warning, unfortunately it's not possible to have Hyper-V with VMware or Virtualbox :'(. You will have to choose one of three systems." >}}
+
 
 
 
