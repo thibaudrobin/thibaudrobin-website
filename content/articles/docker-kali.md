@@ -8,7 +8,7 @@ nopaging = "true"
 +++
 
 
-I'm sure you have already been in the same situation than me. You're working at a client's house for a penetration test, a tight time slot for your tests, no downtime. You arrive a little late in the morning (thanks to the strikes) and your virtual machine containing all your tools doesn't want to start (I knew I shouldn't have to play with my bootloader yesterday night tss).
+I'm sure you have already been in the same situation than me. You're working at a client's house for a penetration test, a tight time slot for your tests, no downtime. You arrive a little late in the morning (thanks to the strikes) and your virtual machine containing all your tools doesn't want to start (I knew I shouldn't have play with my bootloader yesterday night tss).
 
 No choice, you have to reinstall this machine. And rapidly !
 
@@ -61,7 +61,7 @@ First you need to install Docker obviously. The documentation is really clear.
 
 ## 2. Create a nice Dockerfile
 
-Ok now that you have Docker, wen can build our own Kali image. All the images are available online (https://www.kali.org/news/official-kali-linux-docker-images/) but none of them are really interresting. Below, all the tools I need : 
+Ok now that you have Docker, we can build our own Kali image. All the images are available online (https://www.kali.org/news/official-kali-linux-docker-images/) but none of them are really interresting. Below are all the tools I need : 
 
 ```md
 aircrack-ng
@@ -122,7 +122,7 @@ wordlists
 wpscan
 ```
 
-If you check Kali metapackages (https://tools.kali.org/kali-metapackages), you will always see packages with too much tools or not enough. The kali-light metapackage is a real joke (there is 0 offensive tools wtf). Let's build a REAL `kali-light` image without burp, firefox and all others useless tools in docker.
+If you check Kali metapackages (https://tools.kali.org/kali-metapackages), you will always see packages with too much tools or not enough. The kali-light metapackage is a real joke (there is 0 offensive tools wtf). Let's build a REAL `kali-light` image without burp, firefox and all other useless tools in docker.
 
 `Dockerfile` file
 
