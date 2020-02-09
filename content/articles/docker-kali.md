@@ -4,8 +4,7 @@ date = "2020-02-01"
 title = "[MISC] Kali Linux in 3 seconds with Docker"
 subtitle = "Because my time is too valuable !"
 thumbnail = "/img/docker.png"
-nopaging = "false"
-draft = "false"
+nopaging = "true"
 +++
 
 
