@@ -33,8 +33,7 @@ Have you ever heard of Docker ? Yes I hope ! Docker provides applications throug
 
 I will not describe here how docker works, the docs is already very good : https://docs.docker.com/engine/docker-overview/
 
-I think you've got it, we're going to use Docker for our offensive use.
-
+I think you've got it, we're going to use Docker for our offensive use. So I wrote a small Dockerfile and docker-compose file to build a light kali image with usefull tools. Project : https://github.com/thibaudrobin/docker-kali-light. Let's go into a little bit of detail.
 
 
 ## 1. Install docker
@@ -256,16 +255,20 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 We can also launch container from others directory.
 
-```
+```md
 [th1b4ud@th1b4ud-pc ~]$ docker-compose -f /home/th1b4ud/kali-light/docker-compose.yml run kali-light
 root@07a9e76dfb70:~# 
 ```
 
 ## 6. Create some alias
 
-Usefull alias for your .bashrc. Don't forge to change the location of the project !
+Usefull alias for your .bashrc. Don't forget to change the location of the project !
 
-`echo "alias kali='docker-compose -f /home/th1b4ud/kali-light/docker-compose.yml run kali-light'" >> .bashrc && source .bashrc`
+```bash
+echo "alias kali='docker-compose -f $HOME/kali-light/docker-compose.yml run kali-light'" >> .bashrc && source .bashrc
+```
+
+All the files used are available on my github : https://github.com/thibaudrobin/docker-kali-light
 
 That's all ! Enjoy :)
 
