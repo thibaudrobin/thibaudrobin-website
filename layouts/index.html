@@ -12,7 +12,7 @@
             <div class="posts">
                 
                 <section  class="post">
-                    <h1 class="list-menu">Articles</h1>
+                    <h1 class="list-menu"><i class="fas fa-book fa-sm"></i>&nbsp; Articles</h1>
 
                     {{ $Site := .Site }}
                     {{ range .Site.RegularPages }}
@@ -35,7 +35,7 @@
 
 
                 <section  class="post">
-                    <h1 class="list-menu">Writeups</h1>
+                    <h1 class="list-menu"><i class="fas fa-flag fa-sm"></i>&nbsp; Writeups</h1>
 
                     {{ $Site := .Site }}
                     {{ range .Site.RegularPages }}
@@ -53,37 +53,19 @@
 
                         {{ end }}
                     {{ end }}
+
+                <div class="secret">
+                    Pssssttt ! Need Root-Me solutions ? <a href="https://superlogout.com/">Check this leak</a>
+                </div>
+
                 </section>
-
-                <!-- <section  class="post">
-                        <h1 class="post-title">Others</h1>
-
-                        {{ $Site := .Site }}
-                        {{ range .Site.RegularPages }}
-                        {{ $title := .Title}}
-                        {{ $relPermalink := .RelPermalink }}
-                            {{ if in .Params.categories "Others" }}
-    
-                                <div class="post-categories list-menu">
-                                    <ul class="list-menu">
-                                        <li>
-                                            <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-    
-                            {{ end }}
-                        {{ end }}
-                        
-                </section> -->
             </div>
-
-            
         </div>
 
         {{ partial "footer.html" . }}
         </div>
     </div>
+
     {{ partial "bodyend.html" . }}
 </body>
 </html>
