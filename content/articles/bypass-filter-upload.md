@@ -3,7 +3,7 @@ categories = ["Articles", "PHP", "Web"]
 date = "2019-01-25"
 title = "[WEB] Bypass file upload filter with .htaccess"
 subtitle = "What a weak protection !"
-thumbnail = "/img/cap.svg"
+thumbnail = "/img/file-upload.png"
 nopaging = "true"
 +++
 
@@ -12,6 +12,12 @@ I think you know what I am talking about. The "file upload" vulnerability is fam
 This technique is inspired from the challenge **l33t-hoster** of the [Insomni'hack Teaser 2019 CTF](https://ctftime.org/event/686)
 
 So follow the guide !
+
+{{< protips "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
+
+{{< danger "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
+
+{{< warning "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
 
 ## Show me your protection
 
@@ -139,13 +145,13 @@ So if you can upload this `.htaccess` file we will be the king and we will can e
 
 So try to upload it and we obtain :
 
-```text
+```
 lol filename is empty
 ```
 
 Damned ! But if we analyse the code, we see it split the string in twice with `.` and check if there is two parts on the obtained array. So if we send a filename like `..htaccess`, the code will split in two parts : `.` and `.htaccess`. Test it !
 
-```text
+```
 not an image.
 ```
 
