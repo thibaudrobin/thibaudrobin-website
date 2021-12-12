@@ -7,12 +7,17 @@ title = "Personnal security blog"
 	sidebartitle = "Thibaud Robin"
 	sidebartagline = "Alias Th1b4ud"
 	sidebartagline2 = "PENTESTER"
-	sidedescription = "Personnal blog to speak about cybersecurity and Root-Me FAQ"
+	sidedescription = "Personnal blog to speak about cybersecurity"
 	sidebarphoto = "/img/moi2.jpg"
 	author = "Thibaud Robin"
 	thumbnail = ["/img/favicon.jpg"]
 	gaid = "UA-133286401-1"
 
+[markup]
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 1
 
 [[menu.main]]
 	name   = "WHOAMI"

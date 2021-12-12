@@ -1,14 +1,19 @@
 +++
 categories = ["Articles", "Docker", "Misc"]
 date = "2020-02-01"
-title = "[MISC] Kali Linux in 3 seconds with Docker"
+title = "Kali Linux in 3 seconds with Docker"
 subtitle = "Because my time is too valuable !"
 thumbnail = "/img/docker.png"
 nopaging = "true"
 +++
 
+# TL;DR
 
-I'm sure you have already been in the same situation than me. You're working at a client's house for a penetration test, a tight time slot for your tests, no downtime. You arrive a little late in the morning (thanks to the strikes) and your virtual machine containing all your tools doesn't want to start (I knew I shouldn't have play with my bootloader yesterday night tss).
+Have a look to https://github.com/ShutdownRepo/Exegol
+
+# Why ?
+
+I'm sure you have already been in the same situation than me. You're working at a client's office for a penetration test, a tight time slot for your tests, no downtime. You arrive a little late in the morning (thanks to the strikes) and your virtual machine containing all your tools doesn't want to start (I knew I shouldn't have play with my bootloader yesterday night tss).
 
 No choice, you have to reinstall this machine. And rapidly !
 
@@ -21,8 +26,8 @@ _... 5 minutes later ..._
 **F\*\* why is it so long to boot ? And this dekstop pfff. Why there is no i3 default desktop ???**
 
 ```md
-kali@tools:~$ cme
-bash: cme: command not found
+kali@tools:~$ crackmapexec
+bash: crackmapexec: command not found
 ```
 
 **FFF\*\*\* why CrackMapExec is not installed by default ??**
@@ -35,17 +40,17 @@ I will not describe here how docker works, the docs is already very good : https
 I think you've got it, we're going to use Docker for our offensive use. So I wrote a small Dockerfile and docker-compose file to build a light kali image with usefull tools. Project : https://github.com/thibaudrobin/docker-kali-light. Let's go into a little bit of detail.
 
 
-## 1. Install docker
+# 1. Install docker
 
 First you need to install Docker obviously. The documentation is really clear.
 
-### For Linux
+## For Linux
 
 1. Follow the doc https://docs.docker.com/install/
 2. Make docker work with your main user : https://docs.docker.com/install/linux/linux-postinstall/
 
 
-### For Windows : 
+## For Windows : 
 
 1. Open the official documentation : https://docs.docker.com/docker-for-windows/install
 2. Grab account credentials on BugMeNot : http://bugmenot.com/view/id.docker.com
@@ -57,9 +62,7 @@ First you need to install Docker obviously. The documentation is really clear.
 {{< warning "Warning, unfortunately it's not possible to have Hyper-V with VMware or Virtualbox :'(. You will have to choose one of three systems." >}}
 
 
-
-
-## 2. Create a nice Dockerfile
+# 2. Create a nice Dockerfile
 
 Ok now that you have Docker, we can build our own Kali image. All the images are available online (https://www.kali.org/news/official-kali-linux-docker-images/) but none of them are really interresting. Below are all the tools I need : 
 
@@ -154,7 +157,7 @@ CMD ["/bin/bash"]
 ```
 
 
-## 3. Build your new image
+# 3. Build your new image
 
 You can now create the image with command : `docker build -t kali-light .`
 
@@ -184,7 +187,7 @@ As you can see, our new image has only 500MB of tools to download. It should dow
 
 
 
-## 4. Write Docker compose file
+# 4. Write Docker compose file
 
 Now that we have built our new image, we can write a Docker compose file to facilitate container deployment. This will allow us to, for example, create a container with a directory shared with our host. In our case, we will share `/mnt/share-kali-light` from our host to `/share` directory in containers.
 
@@ -201,7 +204,7 @@ services:
 ```
 
 
-## 5. Create containers
+# 5. Create containers
 
 We can now deploy containers with the docker-compose command. First install it.
 
@@ -259,7 +262,7 @@ We can also launch container from others directory.
 root@07a9e76dfb70:~# 
 ```
 
-## 6. Create some alias
+# 6. Create some alias
 
 Usefull alias for your .bashrc. Don't forget to change the location of the project !
 

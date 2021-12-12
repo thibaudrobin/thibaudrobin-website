@@ -1,7 +1,7 @@
 +++
 categories = ["Articles", "PHP", "Web"]
 date = "2019-01-25"
-title = "[WEB] Bypass file upload filter with .htaccess"
+title = "Bypass file upload filter with .htaccess"
 subtitle = "What a weak protection !"
 thumbnail = "/img/file-upload.png"
 nopaging = "true"
@@ -13,13 +13,7 @@ This technique is inspired from the challenge **l33t-hoster** of the [Insomni'ha
 
 So follow the guide !
 
-{{< protips "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
-
-{{< danger "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
-
-{{< warning "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
-
-## Show me your protection
+# Show me your protection
 
 First step is to understand (at least try) the protection. For this explanation, we will work on a nice PHP example. 
 
@@ -121,7 +115,7 @@ To sum up. Filters do :
 Wow ! That's a secured upload form. But you can easily bypass it ;)
 
 
-## Choose the good file
+# Choose the good file
 
 So, if we recap, we can't upload file with php extension. So the current goal is to have the possibility to execute php code in other file than `.php`. You can do the trick with `.htaccess`.
 
@@ -157,7 +151,7 @@ not an image.
 
 S**t ! Yeah our file is not an image, it's a htaccess file.
 
-## Welcome to polyglot file
+# Welcome to polyglot file
 
 What is polyglot file ?
 
@@ -211,7 +205,7 @@ We don't see our `.htaccess` because apache default configuration hide all file 
 
 
 
-## Bypass the anti-PHP protection
+# Bypass the anti-PHP protection
 
 Nice ! I uploaded my `.htaccess` to run the php contain in my `.php16` files. But how can I upload php to bypass the filter on the code. The answer is simple : encode your payload. 
 
@@ -282,7 +276,7 @@ And enjoy your webshell :)
 ![](/img/articles/bypass-filter-upload-5.png "")
 
 
-## Conclusion
+# Conclusion
 
 It's really complicated to do a good and secure feature of file upload. There will be always a technique to bypass the security. The best way to secure your platform is to use framework which are already secured (a little...), use [ImageMagick](http://php.net/manual/fr/book.imagick.php) functions to check file before to upload it and install a WAF (Web Application Firewall) like ModSecurity in Apache in front of your application.
 

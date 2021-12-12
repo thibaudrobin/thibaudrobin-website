@@ -9,10 +9,10 @@
             
             {{ partial "menu.html" . }}
 
-            <div class="posts">
+            <div>
                 
-                <section  class="post">
-                    <h1 class="list-menu"><i class="fas fa-book fa-sm"></i>&nbsp; Articles</h1>
+                <section  class="index">
+                    <h1 class="list-menu"><i class="fas fa-book fa-sm"></i> Articles</h1>
 
                     {{ $Site := .Site }}
                     {{ range .Site.RegularPages }}
@@ -21,11 +21,9 @@
                         {{ if in .Params.categories "Articles" }}
 
                             <div class="post-categories list-menu">
-                                <ul class="list-menu">
-                                    <li>
-                                        <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
-                                    </li>
-                                </ul>
+                                <p class="list-menu">
+                                    <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
+                                </p>
                             </div>
 
                         {{ end }}
@@ -34,21 +32,19 @@
 
 
 
-                <section  class="post">
-                    <h1 class="list-menu"><i class="fas fa-flag fa-sm"></i>&nbsp; Writeups</h1>
+                <section  class="index">
+                    <h1 class="list-menu"><i class="fas fa-flag fa-sm"></i> Writeups</h1>
 
                     {{ $Site := .Site }}
                     {{ range .Site.RegularPages }}
                     {{ $title := .Title}}
                     {{ $relPermalink := .RelPermalink }}
                         {{ if in .Params.categories "Writeups" }}
-
+                            
                             <div class="post-categories list-menu">
-                                <ul class="list-menu">
-                                    <li>
-                                        <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
-                                    </li>
-                                </ul>
+                                <p class="list-menu">
+                                    <a class="list-menu" href="{{ $relPermalink }}">{{ $title }}</a>
+                                </p>
                             </div>
 
                         {{ end }}
