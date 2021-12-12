@@ -19,7 +19,7 @@ https://gist.github.com/vonKrafft/12c4b1c4a486200aff2a5049328d0c94
 
 ![](/img/hacklab-esgi-2019/0.png)
 
-## Step 1 : Informations gathering
+# Step 1 : Informations gathering
 
 _**Nb : For the following Write-up we’ll use the local address 192.168.122.22 , you can consider that it’s ctf.hacklab-esgi.org.**_
 
@@ -115,7 +115,7 @@ The website have a `robots.txt` with the same directory and some others.
 
 ![robots.txt](/img/hacklab-esgi-2019/2.png)
 
-## Step 2 : Credentials in logs
+# Step 2 : Credentials in logs
 
 There is no interesting informations in all others directory. Let's check the content of `/logs` directory
 
@@ -141,7 +141,7 @@ And redirection when we try to reach `admin.php`. Maybe we need to have a specif
 
 ![](/img/hacklab-esgi-2019/6.png)
 
-## Step 3 : dev-server admin panel compromission
+# Step 3 : dev-server admin panel compromission
 
 If we look closer to `/logs` directory, we see an other type of logs : `/logs/access-details.log`. This is access log provided by the WAF ModSecurity.
 
@@ -171,7 +171,7 @@ There is access log information of the current webserver. If we look closer on B
 
 ![](/img/hacklab-esgi-2019/10.png)
 
-## Step 4 : RCE on dev-server
+# Step 4 : RCE on dev-server
 
 `access.log` seems to be a file system. We know server is a Debian OS based on Linux. We can try to display others files like `/etc/passwd`.
 
@@ -197,7 +197,7 @@ Nice `nc` is installed. IZI pwn :D
 
 ![](/img/hacklab-esgi-2019/15.png)
 
-## Step 5 : Grab forgotten sensitive informations
+# Step 5 : Grab forgotten sensitive informations
 
 2 users are available in the `/etc/passwd` file. This is time to search on the server some informations.
 
@@ -325,7 +325,7 @@ zc9Ur+20TJHIwAKloaZLiMdcpdyFUQQRStXCGD6wqbw8UxGfx1Fd0g==
 
 Perfect ! We have our access.
 
-## Step 6 : Internal network discovery
+# Step 6 : Internal network discovery
 
 ![](/img/hacklab-esgi-2019/17.png)
 
@@ -387,7 +387,7 @@ I use BurpProxy to inspect my HTTP traffic so I can easily inspect and repeat HT
 
 The next step is to discover and understand services on the two internals servers.
 
-### Admin server - admin-server.zedcorp - 10.0.0.3
+## Admin server - admin-server.zedcorp - 10.0.0.3
 
 This could be our target. The confidentials documents are maybe stored on this server. What are the services exposed ?
 
@@ -412,7 +412,7 @@ ftp: Login failed.
 ftp> 
 ```
 
-### Project server - project-server.zedcorp - 10.0.0.2
+## Project server - project-server.zedcorp - 10.0.0.2
 
 10.0.0.2 - project-server.zedcorp is the second server alive on the internal network. Maybe there is some informations on this one.
 
@@ -422,7 +422,7 @@ Services exposes are :
 * AJP on port 8009
 * Web server on port 8080
 
-## Step 7 : RCE on project-server
+# Step 7 : RCE on project-server
 
 What is AJP ?
 
@@ -513,7 +513,7 @@ Connect to it : `proxychains -q nc 10.0.0.2 5555`
 
 ![](/img/hacklab-esgi-2019/27.png)
 
-## Step 8 : Bash history permission mistake
+# Step 8 : Bash history permission mistake
 
 Let's check some classic files
 
@@ -733,7 +733,7 @@ drwxr-xr-x 7 root   root    4096 mars  20 11:03 ..
 -rw-r--r-- 1 root   root    6284 mars  18 17:16 kanban.css
 -rw-r--r-- 1 root   root   18191 mars  18 17:16 kanban.js
 ```
-## Step 9 : Access to admin-server's FTP service
+# Step 9 : Access to admin-server's FTP service
 
 ![](/img/hacklab-esgi-2019/29.png)
 
@@ -766,7 +766,7 @@ CREDENTIALS
 
 So sweet ! It's the backup of the administrator's passwords. We can now access to admin platform on admin-server.
 
-## Step 10 : Access to admin-server's admin platform
+# Step 10 : Access to admin-server's admin platform
 
 With credentials `admin:zedc0rp2019!` we can access to the website.
 
@@ -790,7 +790,7 @@ Interesting. Let's check document upload functionnality.
 
 Bruh ! Not working :(
 
-## Step 11 : Access to CEO's session
+# Step 11 : Access to CEO's session
 
 Let's check requests captured by burp.
 
@@ -811,7 +811,7 @@ Welcome Frederic ! We win ! We are the CEO !
 
 ![](/img/hacklab-esgi-2019/38.png)
 
-## Step 12 : Download confidential projects
+# Step 12 : Download confidential projects
 
 They are there ! Our targets !
 

