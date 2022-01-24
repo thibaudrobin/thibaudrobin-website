@@ -64,7 +64,7 @@ python3 dnscan.py -d thibaud-robin.fr -w subdomains-10000.txt --nocheck
 
 The two tools give similar results and an interesting element was discovered. However, it is possible to do even better in terms of completeness.
 
-{{< warning "The vast majority of tools only resolve their domain name with **A records** which limits the results. Indeed, if a subdomain has another record (MX, CNAME, etc) but no A record, **it will be discarded**." >}}
+{{< warning "The vast majority of tools only resolve their domain name with A records which limits the results. Indeed, if a subdomain has another record (MX, CNAME, etc) but no A record, it will be discarded." >}}
 
 We don't want that, do we? :)
 
@@ -84,6 +84,26 @@ app.thibaud-robin.fr. CNAME app-42-th1b4ud-dev.azurewebsites.net.
 blog.thibaud-robin.fr. CNAME th1b4ud.github.io.
 www.thibaud-robin.fr. CNAME thibaudrobin.github.io.
 ```
+
+Ok great! This time we have everything we want. So about the different subdomains above, are they secure? Not really. It is possible **to take control of at least 3 of them.** Do you know how?
+
+# Time to take over !
+
+## Domain takeover
+
+As seen previously, the DNS CNAME record allows you to make an alias by displaying the contents of another domain. This can be very useful if you want to act transparently for your users. Indeed it allows you to display only one domain name which will take care of displaying the content hosted elsewhere on another domain (and it can be dynamic this time).
+
+So, if I develop an application on `th1b4ud.fr`, I can set a CNAME record on `thibaud-robin.fr` pointing to `th1b4ud.fr`. Like this, I will display th1b4ud.fr application on thibaud-robin.fr without asking my users to use th1b4ud.fr domain. 
+
+But if I lose my domain or forget to recommend it, someone else can buy it for me and display whatever they want on thibaud-robin.fr as long as the DNS are not changed.
+
+![th1b4ud.fr is on sale](2022-01-25-00-29-49.png)
+
+This methodology is the basis for domain capture.
+
+## Subdomain takeover
+
+The subdomain takeover is the same but much more widespread. Indeed, it is very easy to set up a subdomain for a test and forget to delete it. In addition to making bug hunters very happy, this can pose risks of image degradation and squatting.
 
 # Github page
 
