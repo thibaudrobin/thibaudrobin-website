@@ -93,9 +93,9 @@ Ok great! This time we have everything we want. So about the different subdomain
 
 As seen previously, the DNS CNAME record allows you to make an alias by displaying the contents of another domain. This can be very useful if you want to act transparently for your users. Indeed it allows you to display only one domain name which will take care of displaying the content hosted elsewhere on another domain (and it can be dynamic this time).
 
-So, if I develop an application on `th1b4ud.fr`, I can set a CNAME record on `thibaud-robin.fr` pointing to `th1b4ud.fr`. Like this, I will display th1b4ud.fr application on thibaud-robin.fr without asking my users to use th1b4ud.fr domain. 
+So, if I develop an application on `th1b4ud.fr`, I can set a CNAME record on `thibaud-robin.fr` pointing to `th1b4ud.fr`. Like this, I will display th1b4ud.fr application on thibaud-robin.fr without asking my users to use an other domain. 
 
-But if I lose my domain or forget to recommend it, someone else can buy it for me and display whatever they want on thibaud-robin.fr as long as the DNS are not changed.
+But if I lose my domain or forget to reorder it, someone else can buy it for me and display whatever they want on thibaud-robin.fr as long as the DNS are not changed.
 
 ![th1b4ud.fr is on sale](2022-01-25-00-29-49.png)
 
@@ -105,7 +105,31 @@ This methodology is the basis for domain capture.
 
 The subdomain takeover is the same but much more widespread. Indeed, it is very easy to set up a subdomain for a test and forget to delete it. In addition to making bug hunters very happy, this can pose risks of image degradation and squatting.
 
-# Github page
+There are several ways to take control of a subdomain :
+
+- **CNAME takeover:** this is the classic scenario explained above to illustrate the takeover of a domain. It involves taking control of the alias domain displayed on the target subdomain.
+- **MX takeover:** the objective of this scenario is to spoof the domain's MX addresses in order to receive mail that was intended for it. This leads to risks of disclosure of confidential information and threatens the image of the target.
+- **NS takeover:** possible scenario if the DNS entries pointed to by the target domain can be controlled. A nuance is brought on this control. Indeed, it is necessary to control all the DNS servers pointed by the domain at the risk of not fully controlling the takeover.
+
+{{< protips "CNAME and NS subdomain takeover are the most serious and profitable ;)" >}}
+
+So to get back to my DNS entries, how many subdomains of thibaud-robin.fr can you takeover?
+
+```md
+mail.thibaud-robin.fr. MX 10 mx6.th1b4ud.fr.
+mail.thibaud-robin.fr. MX 1 mx1.th1b4ud.fr.
+app.thibaud-robin.fr. CNAME app-42-th1b4ud-dev.azurewebsites.net.
+blog.thibaud-robin.fr. CNAME th1b4ud.github.io.
+www.thibaud-robin.fr. CNAME thibaudrobin.github.io.
+```
+
+At least the mail subdomain. As seen before the domain th1b4ud.fr is available for purchase. Buy it and this subdomain is yours ! :p
+
+But what about my new secure app and blog ?
+
+# In real life
+
+## Github page
 
 ![Create CNAME](2022-01-22-17-33-53.png)
 
