@@ -2,7 +2,6 @@
 categories = ["Articles", "CERT", "CTF", "Hacklab-ESGI-CTF-2019"]
 date = "2019-04-14"
 title = "Post attack analyses ZedCorp Challenge - My name is Rookie"
-thumbnail = "/img/hacklab-esgi-2019/logo.png"
 nopaging = "true"
 +++
 
