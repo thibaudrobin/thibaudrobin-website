@@ -6,6 +6,13 @@ subtitle = "What a weak protection !"
 nopaging = "true"
 +++
 
+# TL;DR
+
+{{< warning "⚠️ NEW VERSION AVAILABLE AT : https://blog.trackflaw.com ⚠️" >}}
+
+New article : [https://blog.trackflaw.com](https://blog.trackflaw.com/comment-contourner-d%C3%A9p%C3%B4t-fichiers/) 
+
+
 I think you know what I am talking about. The "file upload" vulnerability is familiar for you ? Nice. So you know how it could be difficult to bypass protection to upload a webshell. I will show you a little technique to add to your test when you are trying to exploit file upload :)
 
 This technique is inspired from the challenge **l33t-hoster** of the [Insomni'hack Teaser 2019 CTF](https://ctftime.org/event/686)

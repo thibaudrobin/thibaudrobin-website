@@ -5,9 +5,9 @@ title = "Personnal security blog"
 
 [params]
 	sidebartitle = "Thibaud Robin"
-	sidebartagline = "Alias Th1b4ud"
+	sidebartagline = "@Trackflaw"
 	sidebartagline2 = "PENTESTER"
-	sidedescription = "Personnal blog to speak about cybersecurity"
+	sidedescription = "Personnal (old) blog to speak about cybersecurity"
 	sidebarphoto = "/img/moi2.jpg"
 	author = "Thibaud Robin"
 	thumbnail = ["/img/favicon.jpg"]
@@ -36,7 +36,7 @@ title = "Personnal security blog"
 
 [[menu.social]]
 	pre = "<i class='fab fa-github'></i>"
-    url = "https://github.com/thibaudrobin"
+    url = "https://github.com/trackflaw"
     identifier = "github"
 
 [[menu.social]]
@@ -46,7 +46,7 @@ title = "Personnal security blog"
 
 [[menu.social]]
 	pre = "<i class='fab fa-twitter'></i>"
-    url = "https://twitter.com/th1b4ud"
+    url = "https://twitter.com/trackflaw"
     identifier = "twitter"
 
 [[menu.social]]
